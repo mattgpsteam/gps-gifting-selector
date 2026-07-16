@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/gps-design-system-3627b924-fed9-45e1-9d61-fb9479c78a48/colors_and_type.css">
+<style>
+  doc-page:not(:defined) { visibility: hidden; }
+  html { -webkit-font-smoothing: antialiased; }
+  a { color: var(--gps-purple); }
+  a:hover { color: var(--purple-700); }
+</style>
+</helmet>
+
+<x-import component-from-global-scope="doc-page" from="./doc-page.js" size="letter" margin="0.55in" hint-size="8.5in,11in">
+
+  <!-- ===== MASTHEAD ===== -->
+  <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:24px; padding-bottom:16px; border-bottom:1px solid var(--border-subtle);">
+    <img src="assets/GPS-logo-tagline-purple.png" alt="GPS — Casino Gifting Solutions" style="height:46px; width:auto; display:block;">
+    <div style="text-align:right; font:var(--w-demi) 11px/1.2 var(--font-sans); letter-spacing:0.16em; text-transform:uppercase; color:var(--gps-purple);">
+      Loyalty Strategy<br><span style="color:var(--fg-3); font-weight:var(--w-medium);">Recommendation Brief</span>
+    </div>
+  </div>
+
+  <!-- ===== TITLE ===== -->
+  <div style="margin-top:26px;">
+    <div style="font:var(--w-demi) 12px/1.2 var(--font-sans); letter-spacing:0.16em; text-transform:uppercase; color:var(--gps-purple-bright); margin-bottom:12px;">The Traditional Gifting Model</div>
+    <h1 style="font: var(--w-bold) 38px/1.08 var(--font-sans); letter-spacing: -0.01em; color: var(--fg-1); margin: 0 0 16px; max-width: 14ch; font-style: normal">Why traditional gifting is <em style="{{ stillStyle }}">still</em> right for your property</h1>
+    <p style="font:var(--w-regular) 15.5px/1.55 var(--font-sans); color:var(--fg-2); margin:0; max-width:66ch;">Digital gifting is having a moment. Dropship and online-redemption programs are everywhere — and they carry real advantages. But the pitch skips a hard number: what your gifting budget is actually worth by the time it reaches the guest. If your property runs <strong style="color: var(--fg-1); font-weight: var(--w-demi);">$10–$25 weekly gifts</strong> and already hands them out in person on event day, traditional continuity stretches every dollar further than dropship. Here's why:</p>
+  </div>
+
+  <!-- ===== SECTION 1: THE MATH ===== -->
+  <div style="margin-top:30px;">
+    <div style="font:var(--w-demi) 11px/1.2 var(--font-sans); letter-spacing:0.16em; text-transform:uppercase; color:var(--gps-purple); margin-bottom:8px;">The Math</div>
+    <h2 style="font:var(--w-demi) 24px/1.15 var(--font-sans); letter-spacing:-0.005em; color:var(--fg-1); margin:0 0 10px;">Tried, Tested, Strategy Approved</h2>
+    <p style="font:var(--w-regular) 14.5px/1.55 var(--font-sans); color:var(--fg-2); margin:0 0 20px; max-width:70ch;">In a dropship program, soft costs stack on top of every gift. Traditional continuity is bought in bulk — better product pricing, no door-to-door shipping, no per-gift tax, because guests redeem in person. On a <strong style="color:var(--fg-1); font-weight:var(--w-demi);">$20 budget in Michigan</strong>, the difference is stark.</p>
+
+    <!-- comparison cards -->
+    <div style="display:flex; gap:16px; break-inside:avoid;">
+
+      <!-- Dropship -->
+      <div style="flex:1; border:1px solid var(--border-subtle); border-radius:14px; padding:20px; background:var(--bg-page);">
+        <div style="display:flex; align-items:baseline; justify-content:space-between; margin-bottom:14px;">
+          <span style="font:var(--w-demi) 11px/1 var(--font-sans); letter-spacing:0.14em; text-transform:uppercase; color:var(--fg-3);">Dropship</span>
+          <span style="font:var(--w-bold) 18px/1 var(--font-condensed); color:var(--fg-2);">$20 Retail</span>
+        </div>
+        <!-- segmented bar -->
+        <div style="display:flex; height:20px; border-radius:6px; overflow:hidden; margin-bottom:10px;">
+          <div style="width:55%; background:var(--gps-purple);"></div>
+          <div style="width:15%; background:var(--grey-300);"></div>
+          <div style="width:25%; background:var(--grey-400);"></div>
+          <div style="width:5%; background:var(--grey-500);"></div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:5px; font:var(--w-regular) 12px/1.3 var(--font-sans); color:var(--fg-2); margin-bottom:16px;">
+          <div style="display:flex; align-items:center; gap:8px;"><span style="width:9px; height:9px; border-radius:2px; background:var(--grey-300); flex:none;"></span>15% vendor markup — <strong style="font-weight:var(--w-demi); color:var(--fg-1);">$3</strong></div>
+          <div style="display:flex; align-items:center; gap:8px;"><span style="width:9px; height:9px; border-radius:2px; background:var(--grey-400); flex:none;"></span>Small-package shipping — <strong style="font-weight:var(--w-demi); color:var(--fg-1);">$5</strong></div>
+          <div style="display:flex; align-items:center; gap:8px;"><span style="width:9px; height:9px; border-radius:2px; background:var(--grey-500); flex:none;"></span>6% state sales tax — <strong style="font-weight:var(--w-demi); color:var(--fg-1);">~$1</strong></div>
+        </div>
+        <div style="border-top:1px solid var(--border-subtle); padding-top:12px;">
+          <div style="font:var(--w-bold) 34px/1 var(--font-condensed); color:var(--fg-2);">~$11</div>
+          <div style="font:var(--w-medium) 12.5px/1.3 var(--font-sans); color:var(--fg-3); margin-top:4px;">reaches the guest — soft costs eat ~$9</div>
+        </div>
+      </div>
+
+      <!-- Traditional -->
+      <div style="flex:1; border:1.5px solid var(--gps-purple-light); border-radius:14px; padding:20px; background:var(--bg-subtle); box-shadow:var(--sh-2);">
+        <div style="display:flex; align-items:baseline; justify-content:space-between; margin-bottom:14px;">
+          <span style="font:var(--w-demi) 11px/1 var(--font-sans); letter-spacing:0.14em; text-transform:uppercase; color:var(--gps-purple);">Traditional Continuity</span>
+          <span style="font:var(--w-bold) 18px/1 var(--font-condensed); color:var(--gps-purple);">$20 Gift</span>
+        </div>
+        <div style="display:flex; height:20px; border-radius:6px; overflow:hidden; margin-bottom:10px;">
+          <div style="width:100%; background:var(--grad-purple-soft);"></div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:5px; font:var(--w-regular) 12px/1.3 var(--font-sans); color:var(--fg-2); margin-bottom:16px;">
+          <div style="display:flex; align-items:center; gap:8px;"><span style="width:9px; height:9px; border-radius:2px; background:var(--gps-purple); flex:none;"></span>Bulk pricing — <strong style="font-weight:var(--w-demi); color:var(--fg-1);">no retail markup</strong></div>
+          <div style="display:flex; align-items:center; gap:8px;"><span style="width:9px; height:9px; border-radius:2px; background:var(--gps-purple); flex:none;"></span>Redeemed in person — <strong style="font-weight:var(--w-demi); color:var(--fg-1);">no item shipping</strong></div>
+          <div style="display:flex; align-items:center; gap:8px;"><span style="width:9px; height:9px; border-radius:2px; background:var(--gps-purple); flex:none;"></span>Bought at wholesale — <strong style="font-weight:var(--w-demi); color:var(--fg-1);">no per-gift tax</strong></div>
+        </div>
+        <div style="border-top:1px solid var(--border-brand); padding-top:12px;">
+          <div style="font:var(--w-bold) 34px/1 var(--font-condensed); color:var(--gps-purple);">$20+</div>
+          <div style="font:var(--w-medium) 12.5px/1.3 var(--font-sans); color:var(--gps-purple); margin-top:4px;">delivered in value — in the guest's hand</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 2: THE PROOF (dark hero stat band) ===== -->
+  <div style="margin-top:30px; background:var(--grad-purple); border-radius:16px; padding:28px 30px; color:var(--fg-on-purple); break-inside:avoid;">
+    <div style="font:var(--w-demi) 11px/1.2 var(--font-sans); letter-spacing:0.16em; text-transform:uppercase; color:var(--gps-purple-light); margin-bottom:16px;">The Proof Is in the Gifting</div>
+    <div style="display:flex; gap:30px; align-items:center; flex-wrap:wrap;">
+      <div style="flex:1 1 210px;">
+        <div style="font:var(--w-bold) 64px/0.9 var(--font-condensed); letter-spacing:-0.01em; color:#fff;">$60K<span style="font-size:38px; vertical-align:top;">+</span></div>
+        <div style="font:var(--w-medium) 13px/1.35 var(--font-sans); color:rgba(255,255,255,0.82); margin-top:8px; max-width:24ch;">in incremental revenue <strong style="color:#fff; font-weight:var(--w-demi);">per day</strong> from carded, invited players</div>
+      </div>
+      <div style="flex:2 1 300px; font:var(--w-regular) 14px/1.55 var(--font-sans); color:rgba(255,255,255,0.9);">
+        A Southern California casino moved back to traditional gifting and saw a <strong style="color:#fff; font-weight:var(--w-demi);">16% lift in redemptions</strong> almost immediately. Same soft-cost math, felt from the guest's side: at a $35 price point, the in-hand traditional gift visibly beat the dropship version — none of the budget lost to markup, shipping, or tax. Guests redeemed more, and those redeemers carried a minimum <strong style="color:#fff; font-weight:var(--w-demi);">$150 ADT</strong>.
+      </div>
+    </div>
+    <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:22px; padding-top:20px; border-top:1px solid rgba(255,255,255,0.18);">
+      <div style="flex:1 1 120px; text-align:center; padding:6px 4px;"><div style="font:var(--w-bold) 26px/1 var(--font-condensed); color:#fff;">+16%</div><div style="font:var(--w-medium) 11px/1.3 var(--font-sans); color:var(--gps-purple-light); text-transform:uppercase; letter-spacing:0.08em; margin-top:6px;">Redemptions</div></div>
+      <div style="flex:1 1 120px; text-align:center; padding:6px 4px; border-left:1px solid rgba(255,255,255,0.18);"><div style="font:var(--w-bold) 26px/1 var(--font-condensed); color:#fff;">$150</div><div style="font:var(--w-medium) 11px/1.3 var(--font-sans); color:var(--gps-purple-light); text-transform:uppercase; letter-spacing:0.08em; margin-top:6px;">Minimum ADT</div></div>
+      <div style="flex:1 1 120px; text-align:center; padding:6px 4px; border-left:1px solid rgba(255,255,255,0.18);"><div style="font:var(--w-bold) 26px/1 var(--font-condensed); color:#fff;">$35</div><div style="font:var(--w-medium) 11px/1.3 var(--font-sans); color:var(--gps-purple-light); text-transform:uppercase; letter-spacing:0.08em; margin-top:6px;">Gift price point</div></div>
+    </div>
+  </div>
+
+  <!-- ===== SECTION 3: SOLUTIONS ===== -->
+  <div style="margin-top:30px; break-inside:avoid;">
+    <div style="font:var(--w-demi) 11px/1.2 var(--font-sans); letter-spacing:0.16em; text-transform:uppercase; color:var(--gps-purple); margin-bottom:8px;">The Solution</div>
+    <h2 style="font:var(--w-demi) 24px/1.15 var(--font-sans); letter-spacing:-0.005em; color:var(--fg-1); margin:0 0 10px;">Gifting Day Support</h2>
+    <p style="font:var(--w-regular) 14.5px/1.55 var(--font-sans); color:var(--fg-2); margin:0 0 18px; max-width:70ch;">Be honest about why properties abandon traditional gifting: it's rarely price — it's logistics. Storage, event-day staff, a place to stage pallets. If those constraints are your true blocker, digital may be the better fit. But if operations were the <em>only</em> reason you left, GPS removes the headache.</p>
+
+    <div style="display:flex; gap:16px;">
+      <div style="flex:1; border:1px solid var(--border-subtle); border-radius:14px; padding:18px 20px; background:var(--bg-page);">
+        <div style="font:var(--w-demi) 15px/1.3 var(--font-sans); color:var(--gps-purple); margin-bottom:6px;">Club-Ready Packaging</div>
+        <p style="font:var(--w-regular) 13px/1.5 var(--font-sans); color:var(--fg-2); margin:0;">Gifts arrive guest-ready at your property. No unboxing, no added staff — products ready to hand out on event day.</p>
+      </div>
+      <div style="flex:1; border:1px solid var(--border-subtle); border-radius:14px; padding:18px 20px; background:var(--bg-page);">
+        <div style="font:var(--w-demi) 15px/1.3 var(--font-sans); color:var(--gps-purple); margin-bottom:6px;">Warehouse Network</div>
+        <p style="font:var(--w-regular) 13px/1.5 var(--font-sans); color:var(--fg-2); margin:0;">Our regional warehouses store gifts close to your property and deliver just in time for giveaway day — minimizing on-site storage.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== CTA BAND ===== -->
+  <div style="margin-top:28px; background:var(--gps-purple-deep); border-radius:16px; padding:26px 30px; display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap; break-inside:avoid;">
+    <div style="flex:1 1 320px;">
+      <div style="font:var(--w-bold) 20px/1.25 var(--font-sans); color:#fff; margin-bottom:8px;">One Partner, Every Model, Strong ROI.</div>
+      <p style="font:var(--w-regular) 13.5px/1.5 var(--font-sans); color:rgba(255,255,255,0.82); margin:0; max-width:52ch;">GPS runs traditional, digital, and hybrid loyalty solutions — evolve your rewards strategy without juggling multiple vendors.</p>
+    </div>
+    <div style="flex:none; text-align:right;">
+      <a href="mailto:info@gpsteam.com" style="display:inline-flex; align-items:center; gap:10px; background:var(--gps-purple-bright); color:#fff; font:var(--w-bold) 13px/1 var(--font-sans); letter-spacing:0.08em; text-transform:uppercase; padding:15px 22px; border-radius:8px; border-bottom:none;">Talk to YOUR STRATEGIST about THE RIGHT gifting model <span style="font-family: var(--font-sans); font-weight: var(--w-bold); font-size: 15px; transform: scaleY(1.4); display: inline-block;">»</span></a>
+      
+    </div>
+  </div>
+
+  <!-- ===== FOOTNOTE ===== -->
+  <div style="margin-top:16px; font:var(--w-regular) 10.5px/1.4 var(--font-sans); color:var(--fg-3);">Budget example based on a $20 gift in Michigan: 15% vendor markup, ~$5 small-package shipping, and 6% state sales tax. Figures illustrative and vary by state, item, and program.</div>
+
+</x-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: &quot;8.5in&quot;, &quot;height&quot;: &quot;11in&quot; },
+  &quot;stillEmphasis&quot;: {
+    &quot;editor&quot;: &quot;enum&quot;,
+    &quot;options&quot;: [&quot;Italic&quot;, &quot;Italic + accent color&quot;, &quot;Underline&quot;, &quot;None&quot;],
+    &quot;default&quot;: &quot;Italic&quot;,
+    &quot;tsType&quot;: &quot;string&quot;,
+    &quot;section&quot;: &quot;Headline emphasis&quot;
+  },
+  &quot;stillColor&quot;: {
+    &quot;editor&quot;: &quot;color&quot;,
+    &quot;default&quot;: [&quot;#8208d1&quot;, &quot;#582c83&quot;, &quot;#bda3e2&quot;],
+    &quot;tsType&quot;: &quot;string&quot;,
+    &quot;section&quot;: &quot;Headline emphasis&quot;
+  }
+}">
+class Component extends DCLogic {
+  renderVals() {
+    const mode = this.props.stillEmphasis ?? "Italic";
+    let color = this.props.stillColor ?? "#8208d1";
+    if (Array.isArray(color)) color = color[0];
+    let s = "";
+    if (mode === "Italic + accent color") s = "font-style:italic; font-weight:var(--w-regular); color:" + color + ";";
+    else if (mode === "Italic") s = "font-style:italic; font-weight:var(--w-regular);";
+    else if (mode === "Underline") s = "text-decoration:underline; text-decoration-color:" + color + "; text-underline-offset:5px; text-decoration-thickness:2px;";
+    else s = "";
+    return { stillStyle: s };
+  }
+}
+</script>
+</body>
+</html>
