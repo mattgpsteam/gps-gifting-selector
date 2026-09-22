@@ -148,3 +148,10 @@ test('mirror: a bad value skips one row; a schema problem halts and keeps everyt
   await assert.rejects(m2.tick(), /UNKNOWN_FIELD_NAME/);
   assert.equal(s2.counts().unsynced, 1);
 });
+
+test('fields: a finished /sales run is a Sales demo, not an abandoned lead', () => {
+  const base = { sessionId: SID, seq: 3, startedAt: T0, at: T0, order: ['GOAL'], answers: { GOAL: 'x' }, lead: null, result: 'Full Digital Dropship' };
+  assert.equal(toFields({ ...base, source: 'gifting-selector.gpspromotions.com (sales)' })['Status'], 'Sales demo');
+  assert.equal(toFields({ ...base, source: 'gifting-selector.gpspromotions.com' })['Status'], 'Reached form');
+  assert.equal(toFields({ ...base, result: null, source: 'x (sales)' })['Status'], 'In progress');
+});

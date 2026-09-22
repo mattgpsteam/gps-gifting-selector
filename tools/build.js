@@ -31,6 +31,16 @@ if (process.argv.includes('--extract')) {
 } else {
   const src = fs.readFileSync(srcFile, 'utf8');
   const indent = m[2].match(/^\s*/)[0];
-  fs.writeFileSync(indexFile, html.replace(re, (_, a, _b, c) => a + indent + encode(src) + c));
+  const built = html.replace(re, (_, a, _b, c) => a + indent + encode(src) + c);
+  fs.writeFileSync(indexFile, built);
   console.log('built index.html from', path.relative(root, srcFile));
+
+  // /sales/ is the same page; the page itself skips the lead gate on that path.
+  // noindex keeps the gate-free copy out of search results.
+  const salesDir = path.join(root, 'sales');
+  fs.mkdirSync(salesDir, { recursive: true });
+  const sales = built.replace(/<head>/i, '<head>\n  <meta name="robots" content="noindex, nofollow">');
+  if (sales === built) throw new Error('no <head> in index.html to mark noindex');
+  fs.writeFileSync(path.join(salesDir, 'index.html'), sales);
+  console.log('built sales/index.html');
 }

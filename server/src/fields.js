@@ -30,7 +30,7 @@ const EVENTS = ['IGA', 'G2E', 'Raving/CMTC', 'Casino Connect', 'OIGA', 'WIGA', '
 // Q8' labels, exactly as the page sends them.
 const PROGRAM_IDEAS = ['Adding the ability to bank points', 'Providing custom experiences for VIPs',
   'Allowing players to continuously spend points', 'Increasing gifting budget'];
-const STATUSES = ['In progress', 'Reached form', 'Lead submitted'];
+const STATUSES = ['In progress', 'Reached form', 'Lead submitted', 'Sales demo'];
 
 const dateTime = { dateFormat: { name: 'us' }, timeFormat: { name: '12hour' }, timeZone: 'America/Los_Angeles' };
 const choices = (names) => ({ choices: names.map((name) => ({ name })) });
@@ -60,6 +60,8 @@ const SCHEMA = [
 
 function statusOf(row) {
   if (row.lead) return 'Lead submitted';
+  // A rep's /sales run never shows the form, so "Reached form" would read as a lost lead.
+  if (row.result && (row.source || '').endsWith(' (sales)')) return 'Sales demo';
   if (row.result) return 'Reached form';
   return 'In progress';
 }
