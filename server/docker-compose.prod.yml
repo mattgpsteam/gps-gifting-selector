@@ -1,0 +1,26 @@
+# Its own compose project (`selector-log`), joined to the design-kiosk network so
+# that stack's Caddy can reach it at design-kiosk.gpsteam.com/selector/. Separate on
+# purpose: rebuilding this must never touch the live Nike kiosk containers.
+services:
+  log:
+    build: .
+    image: selector-log:local
+    container_name: selector-log
+    restart: unless-stopped
+    env_file: .env.prod
+    environment:
+      PORT: "8080"
+      DB_FILE: /data/responses.sqlite
+    volumes:
+      # On the LUKS volume, so lead PII sits inside the existing encrypted backups.
+      - /mnt/gps-data/selector-log:/data
+    networks: [kiosk]
+    # No published port. The only way in is Caddy.
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+
+networks:
+  kiosk:
+    external: true
+    name: gps-design-kiosk_default

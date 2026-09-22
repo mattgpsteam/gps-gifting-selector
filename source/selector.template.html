@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="3fc4f1fe-5a45-47bf-b286-3b0156b1095c"></script>
+</head>
+<body>
+
+<x-dc>
+<helmet>
+  <style>/* =============================================================
+   GPS (Global Promotional Sourcing) — Design Tokens
+   Source: 2025_GPS-BrandGuide-OneSheet.pdf
+   ============================================================= */
+
+/* ---------- Fonts ---------- */
+@font-face { font-family: "Avenir Next LT Pro"; font-weight: 100; font-style: normal;
+  src: url("b62d7295-687d-4009-a7bd-ffee9b770ae3") format("truetype"); font-display: swap; }
+@font-face { font-family: "Avenir Next LT Pro"; font-weight: 200; font-style: normal;
+  src: url("2fd9ae06-947e-4379-a41f-3a664792036e") format("truetype"); font-display: swap; }
+@font-face { font-family: "Avenir Next LT Pro"; font-weight: 300; font-style: normal;
+  src: url("6919ef96-8421-4a19-8a33-0259279b4c57") format("truetype"); font-display: swap; }
+@font-face { font-family: "Avenir Next LT Pro"; font-weight: 300; font-style: italic;
+  src: url("e93aefdb-4ad7-4592-8de5-c6e7495d6146") format("truetype"); font-display: swap; }
+@font-face { font-family: "Avenir Next LT Pro"; font-weight: 400; font-style: normal;
+  src: url("efcc7c1c-912d-4c4e-859c-2aba080ae6a6") format("truetype"); font-display: swap; }
+@font-face { font-family: "Avenir Next LT Pro"; font-weight: 400; font-style: italic;
+  src: url("fa1f7ff8-3507-4356-a5e6-86615bf6829f") format("truetype"); font-display: swap; }
+@font-face { font-family: "Avenir Next LT Pro"; font-weight: 500; font-style: normal;
+  src: url("b8e3d62f-a09e-49b3-8fde-941f5ce074b6") format("truetype"); font-display: swap; }
+@font-face { font-family: "Avenir Next LT Pro"; font-weight: 500; font-style: italic;
+  src: url("ebfe5c57-1486-4441-aa7a-31840de8bc8b") format("truetype"); font-display: swap; }
+@font-face { font-family: "Avenir Next LT Pro"; font-weight: 600; font-style: normal;
+  src: url("5b7f3326-fe2e-4b7c-b767-6310e95799ce") format("truetype"); font-display: swap; }
+@font-face { font-family: "Avenir Next LT Pro"; font-weight: 600; font-style: italic;
+  src: url("60c22d15-2ad6-417c-91d1-c770d78f8c3c") format("truetype"); font-display: swap; }
+@font-face { font-family: "Avenir Next LT Pro"; font-weight: 700; font-style: normal;
+  src: url("44b8da35-8344-4abc-b6fa-c39e94788efd") format("truetype"); font-display: swap; }
+@font-face { font-family: "Avenir Next LT Pro"; font-weight: 700; font-style: italic;
+  src: url("b484dbee-fef0-4a96-ab08-c3d8904aba66") format("truetype"); font-display: swap; }
+
+/* NOTE: 800 Heavy is intentionally NOT loaded. Per brand rule, Bold (700) is the
+   maximum weight for headlines and display. Do not add Heavy/Black @font-face rules. */
+
+/* Condensed Avenir — useful for stat callouts and data chips */
+@font-face { font-family: "Avenir Next LT Pro Cn"; font-weight: 400; font-style: normal;
+  src: url("782c0eed-383f-4733-827e-0842272da57a") format("truetype"); font-display: swap; }
+@font-face { font-family: "Avenir Next LT Pro Cn"; font-weight: 600; font-style: normal;
+  src: url("b23ada67-4057-4a89-9b16-b1f13fd97fe6") format("truetype"); font-display: swap; }
+@font-face { font-family: "Avenir Next LT Pro Cn"; font-weight: 700; font-style: normal;
+  src: url("54e4f868-28d9-4073-938e-468b68a68da4") format("truetype"); font-display: swap; }
+
+:root {
+  /* ---------- Brand core colors (from 2025 Brand Guide) ---------- */
+  --gps-purple:          #582c83;  /* Pantone 268 C — PRIMARY */
+  --gps-purple-light:    #bda3e2;  /* Pantone 264 C — SECONDARY */
+  --gps-purple-bright:   #8208d1;  /* Brand bright purple — accent / glow (replaces neon) */
+  --gps-purple-deep:     #2e034a;  /* Brand deep purple — can replace black in some uses */
+  --gps-white:           #ffffff;
+  --gps-black:           #000000;
+
+  /* ---------- Extended purple scale (derived, maintains brand feel) ---------- */
+  --purple-50:   #f6f1fc;
+  --purple-100:  #ece1f7;
+  --purple-200:  #d8c3ec;
+  --purple-300:  #bda3e2;   /* = gps-purple-light */
+  --purple-400:  #9a79cf;
+  --purple-500:  #7a4fb8;
+  --purple-600:  #582c83;   /* = gps-purple */
+  --purple-700:  #44216a;
+  --purple-800:  #31184d;
+  --purple-900:  #1f0f31;
+
+  /* ---------- Neutral grey scale ---------- */
+  --grey-50:   #fafafa;
+  --grey-100:  #f4f4f6;
+  --grey-200:  #e7e6eb;
+  --grey-300:  #d1cfd8;
+  --grey-400:  #a6a3b0;
+  --grey-500:  #76737f;
+  --grey-600:  #4a4752;
+  --grey-700:  #2f2d36;
+  --grey-800:  #1a191f;
+  --grey-900:  #0d0c10;
+
+  /* ---------- Semantic surfaces ---------- */
+  --bg-page:        #ffffff;
+  --bg-subtle:      #faf8fd;      /* very pale purple wash */
+  --bg-muted:       var(--grey-100);
+  --bg-inverse:     var(--purple-600);
+  --bg-inverse-2:   var(--purple-800);
+
+  --fg-1:           #1a1022;      /* primary text, near-black with purple cast */
+  --fg-2:           #4a4752;      /* secondary text */
+  --fg-3:           var(--grey-500); /* tertiary / captions */
+  --fg-on-purple:   #ffffff;
+  --fg-accent:      var(--gps-purple);
+
+  --border-subtle:  var(--grey-200);
+  --border-strong:  var(--grey-300);
+  --border-brand:   var(--gps-purple-light);
+
+  /* ---------- Neon accent (from mystery-gifting email + 2027 Buyer's Guide) ----------
+     Saturated electric violet used for glow effects, callouts, and display headlines
+     on dark backgrounds. Treat as an ACCENT, not a replacement for Pantone 268 C. */
+  --neon-violet:    #c081ff;   /* brightest — glow core, display on black */
+  --neon-purple:    #8208d1;   /* brand bright purple — CTAs on dark, emphasis words */
+
+  /* ---------- Inverse foreground tokens (readability on purple/black) ----------
+     Never place dark text on Pantone 268 C. Use these instead. */
+  --fg-on-purple-primary:    var(--gps-white);        /* default text on #582c83 */
+  --fg-on-purple-secondary:  var(--gps-purple-light); /* Pantone 264 C — supporting */
+  --fg-on-purple-muted:      rgba(255, 255, 255, 0.72);
+  --fg-on-dark-primary:      var(--gps-white);
+  --fg-on-dark-secondary:    var(--gps-purple-light);
+  --fg-on-dark-accent:       var(--neon-violet);      /* for glow headlines */
+
+  /* ---------- Semantic status ----------
+     Per brand team: no mustard/orange/yellow. Warnings express via the brand
+     lavender-on-purple system, not a hue shift. */
+  --success:        #2e8757;
+  --danger:         #b8283a;
+  --info:           var(--purple-500);
+  --attention:      var(--gps-purple-light); /* lavender — replaces mustard warning */
+
+  /* ---------- Typography ---------- */
+  --font-sans:      "Avenir Next LT Pro", "Avenir Next", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-condensed: "Avenir Next LT Pro Cn", "Avenir Next LT Pro", "Avenir Next Condensed", system-ui, sans-serif;
+  --font-mono:      ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  /* Weights — Bold (700) is the MAXIMUM. Heavy/Black (800+) is not used per brand rule. */
+  --w-thin: 100; --w-ultlt: 200; --w-light: 300; --w-regular: 400;
+  --w-medium: 500; --w-demi: 600; --w-bold: 700;
+
+  /* Type scale — built around 16px base, expressive display tier for casino/gaming feel */
+  --fs-display-xl:  72px;  --lh-display-xl: 1.02; --ls-display-xl: -0.02em;
+  --fs-display-l:   56px;  --lh-display-l:  1.05; --ls-display-l:  -0.02em;
+  --fs-display-m:   44px;  --lh-display-m:  1.08; --ls-display-m:  -0.015em;
+  --fs-h1:          36px;  --lh-h1:         1.15; --ls-h1:         -0.01em;
+  --fs-h2:          28px;  --lh-h2:         1.2;  --ls-h2:         -0.005em;
+  --fs-h3:          22px;  --lh-h3:         1.3;
+  --fs-h4:          18px;  --lh-h4:         1.35;
+  --fs-body-l:      18px;  --lh-body-l:     1.55;
+  --fs-body:        16px;  --lh-body:       1.55;
+  --fs-body-s:      14px;  --lh-body-s:     1.5;
+  --fs-caption:     12px;  --lh-caption:    1.4;
+  --fs-overline:    12px;  --lh-overline:   1.2;   --ls-overline: 0.16em;
+
+  /* ---------- Spacing (4px base) ---------- */
+  --sp-0: 0;
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --sp-10: 40px;
+  --sp-12: 48px;
+  --sp-16: 64px;
+  --sp-20: 80px;
+  --sp-24: 96px;
+  --sp-32: 128px;
+
+  /* ---------- Radii ---------- */
+  --r-xs:   4px;
+  --r-sm:   6px;
+  --r-md:   10px;
+  --r-lg:   14px;
+  --r-xl:   20px;
+  --r-2xl:  28px;
+  --r-pill: 999px;
+
+  /* ---------- Shadows ---------- */
+  --sh-1: 0 1px 2px rgba(31, 15, 49, 0.06), 0 1px 1px rgba(31, 15, 49, 0.04);
+  --sh-2: 0 4px 10px rgba(31, 15, 49, 0.08), 0 1px 2px rgba(31, 15, 49, 0.04);
+  --sh-3: 0 10px 24px rgba(31, 15, 49, 0.10), 0 2px 6px rgba(31, 15, 49, 0.05);
+  --sh-4: 0 20px 48px rgba(31, 15, 49, 0.14), 0 4px 10px rgba(31, 15, 49, 0.06);
+  --sh-brand: 0 12px 30px rgba(88, 44, 131, 0.28);
+  --sh-inset: inset 0 0 0 1px rgba(88, 44, 131, 0.12);
+
+  /* ---------- Gradients ---------- */
+  --grad-purple:        linear-gradient(135deg, #582c83 0%, #3a1c5c 100%);
+  --grad-purple-soft:   linear-gradient(135deg, #bda3e2 0%, #582c83 100%);
+  --grad-purple-wash:   linear-gradient(180deg, #faf8fd 0%, #ece1f7 100%);
+  --grad-hero:          radial-gradient(1000px 600px at 20% 0%, #7a4fb8 0%, #582c83 45%, #31184d 100%);
+  --grad-neon-glow:     radial-gradient(60% 80% at 50% 50%, #c081ff 0%, #582c83 55%, #0b0415 100%);
+
+  /* ---------- Brand background fields (sampled from official BKGD-01 assets) ---------- */
+  --bg-purple-field:    linear-gradient(150deg, #381d52 0%, #5c3089 50%, #3a1f56 100%);
+  --bg-dark-field:      radial-gradient(120% 120% at 30% 25%, #2a2a2a 0%, #151515 45%, #000000 100%);
+  --bg-light-field:     radial-gradient(120% 120% at 70% 20%, #ffffff 0%, #f0f1f3 55%, #e0e1e3 100%);
+  --bg-lavender-field:  linear-gradient(145deg, #9974ee 0%, #ac8cef 50%, #c7aff0 100%);
+
+  /* ---------- Neon glow / drop-shadow style elements (from brand guide §Style Elements) ----------
+     "Offset shadow · 0 blur · single drop shadow · directly behind" for drop-shadow type
+     "Single glow · no blur variations" for neon-glow type */
+  --glow-neon-sm:   0 0 10px rgba(192, 129, 255, 0.75), 0 0 22px rgba(130, 8, 209, 0.55);
+  --glow-neon-md:   0 0 14px rgba(192, 129, 255, 0.85), 0 0 36px rgba(130, 8, 209, 0.6), 0 0 64px rgba(88, 44, 131, 0.45);
+  --glow-neon-lg:   0 0 18px rgba(220, 180, 255, 0.95), 0 0 48px rgba(130, 8, 209, 0.7), 0 0 96px rgba(88, 44, 131, 0.55);
+  --ds-offset:      2px 2px 0 rgba(0, 0, 0, 0.9);   /* hard offset drop-shadow (0 blur) */
+
+  /* ---------- Motion ---------- */
+  --ease-out:  cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast:   120ms;
+  --dur-base:   200ms;
+  --dur-slow:   320ms;
+}
+
+/* =============================================================
+   Semantic element styles
+   ============================================================= */
+
+html { font-family: var(--font-sans); color: var(--fg-1); background: var(--bg-page); }
+body { margin: 0; font: var(--w-regular) var(--fs-body)/var(--lh-body) var(--font-sans); color: var(--fg-1); }
+
+.display-xl { font: var(--w-bold) var(--fs-display-xl)/var(--lh-display-xl) var(--font-sans); letter-spacing: var(--ls-display-xl); }
+.display-l  { font: var(--w-bold) var(--fs-display-l)/var(--lh-display-l)   var(--font-sans); letter-spacing: var(--ls-display-l); }
+.display-m  { font: var(--w-bold)  var(--fs-display-m)/var(--lh-display-m)   var(--font-sans); letter-spacing: var(--ls-display-m); }
+
+h1, .h1 { font: var(--w-bold)   var(--fs-h1)/var(--lh-h1) var(--font-sans); letter-spacing: var(--ls-h1); margin: 0 0 var(--sp-4); }
+h2, .h2 { font: var(--w-demi)   var(--fs-h2)/var(--lh-h2) var(--font-sans); letter-spacing: var(--ls-h2); margin: 0 0 var(--sp-3); }
+h3, .h3 { font: var(--w-demi)   var(--fs-h3)/var(--lh-h3) var(--font-sans); margin: 0 0 var(--sp-2); }
+h4, .h4 { font: var(--w-medium) var(--fs-h4)/var(--lh-h4) var(--font-sans); margin: 0 0 var(--sp-2); }
+
+.body-l   { font: var(--w-regular) var(--fs-body-l)/var(--lh-body-l) var(--font-sans); }
+p, .body  { font: var(--w-regular) var(--fs-body)/var(--lh-body) var(--font-sans); margin: 0 0 var(--sp-4); }
+.body-s   { font: var(--w-regular) var(--fs-body-s)/var(--lh-body-s) var(--font-sans); }
+.caption  { font: var(--w-regular) var(--fs-caption)/var(--lh-caption) var(--font-sans); color: var(--fg-3); }
+
+.overline {
+  font: var(--w-demi) var(--fs-overline)/var(--lh-overline) var(--font-sans);
+  letter-spacing: var(--ls-overline);
+  text-transform: uppercase;
+  color: var(--gps-purple);
+}
+
+.stat-number {
+  font: var(--w-bold) var(--fs-display-xl)/0.95 var(--font-condensed);
+  color: var(--gps-purple);
+  letter-spacing: -0.01em;
+}
+
+a { color: var(--gps-purple); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color var(--dur-base) var(--ease-out); }
+a:hover { border-bottom-color: var(--gps-purple); }
+
+code, pre { font-family: var(--font-mono); font-size: 0.92em; }
+</style>
+  <style>
+    html, body { margin: 0; background: #faf8fd; }
+    * { box-sizing: border-box; }
+    a { color: #582c83; }
+    a:hover { color: #8208d1; }
+  </style>
+</helmet>
+
+<div style="min-height: 100vh; background: radial-gradient(1100px 520px at 50% -8%, #f0e7fb 0%, #faf8fd 46%, #ffffff 100%); font-family: var(--font-sans); color: var(--fg-1); display: flex; flex-direction: column; align-items: center; padding: 56px 20px 88px;">
+
+  <svg width="0" height="0" style="position: absolute;" aria-hidden="true">
+    <defs>
+      <symbol id="gpsChev" sc-camel-view-box="0 0 54.75 88.5">
+        <path d="M54.04,41.23L35.29,3.73c-1.67-3.33-5.72-4.68-9.06-3.02-3.33,1.67-4.69,5.72-3.02,9.06l17.24,34.48-17.24,34.48c-1.67,3.33-.32,7.39,3.02,9.06.97.48,2,.71,3.01.71,2.48,0,4.86-1.37,6.04-3.73l18.75-37.5c.95-1.9.95-4.14,0-6.04Z" fill="currentColor"></path>
+        <path d="M31.54,41.23L12.79,3.73C11.12.4,7.06-.95,3.73.71.4,2.38-.95,6.43.71,9.77l17.24,34.48L.71,78.73c-1.67,3.33-.32,7.39,3.02,9.06.97.48,2,.71,3.01.71,2.48,0,4.86-1.37,6.04-3.73l18.75-37.5c.95-1.9.95-4.14,0-6.04Z" fill="currentColor"></path>
+      </symbol>
+    </defs>
+  </svg>
+
+  <header style="text-align: center; margin-bottom: 44px; max-width: 640px;">
+    <img src="9b1d1652-4156-4cdb-a64f-274ec56fb488" alt="GPS" style="height: 38px; width: auto; margin: 0 auto 22px; display: block;">
+    <div style="font: var(--w-demi) 12px/1.2 var(--font-sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--gps-purple); margin-bottom: 14px;">Gifting Program Selector</div>
+    <h1 style="font: var(--w-bold) clamp(34px, 5.5vw, 52px)/1.04 var(--font-sans); letter-spacing: -0.015em; color: var(--gps-purple-deep); margin: 0;">{{ headline }}</h1>
+    <p style="margin: 18px auto 0; color: var(--fg-2); font: var(--w-regular) 16px/1.6 var(--font-sans); max-width: 460px;">{{ intro }}</p>
+  </header>
+
+  <sc-if value="{{ isQuestion }}" hint-placeholder-val="{{ true }}">
+    <div style="--accent: {{ accent }}; width: 100%; max-width: 640px; display: flex; flex-direction: column; align-items: center;">
+
+      <div style="width: 100%; margin-bottom: 28px;">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 9px;">
+          <span style="font: var(--w-demi) 11px/1.2 var(--font-sans); letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-3);">{{ progressLabel }}</span>
+          <span style="font: var(--w-demi) 11px/1.2 var(--font-condensed); letter-spacing: 0.04em; color: var(--gps-purple);">{{ progressPct }}</span>
+        </div>
+        <div style="height: 4px; background: var(--purple-100); border-radius: 999px; overflow: hidden;">
+          <div style="height: 100%; width: {{ progressWidth }}; background: var(--accent); border-radius: 999px; transition: width 0.5s var(--ease-out);"></div>
+        </div>
+      </div>
+
+      <div key="{{ nodeKey }}" style="width: 100%; background: #ffffff; border: 1px solid var(--border-subtle); border-radius: 14px; padding: 40px 40px 36px; box-shadow: var(--sh-3);">
+        <div style="font: var(--w-demi) 11px/1.2 var(--font-sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--gps-purple-light); margin-bottom: 12px;">{{ progressLabel }}</div>
+        <h2 style="font: var(--w-bold) clamp(22px, 3vw, 28px)/1.2 var(--font-sans); letter-spacing: -0.01em; color: var(--gps-purple-deep); margin: 0 0 8px;">{{ questionText }}</h2>
+        <p style="font: var(--w-regular) 14px/1.55 var(--font-sans); color: var(--fg-2); margin: 0 0 24px;">{{ questionNote }}</p>
+
+        <sc-for list="{{ options }}" as="option" hint-placeholder-count="3">
+          <button sc-camel-on-click="{{ option.onClick }}" style="display: flex; align-items: flex-start; gap: 15px; width: 100%; background: var(--bg-subtle); border: 1.5px solid var(--border-subtle); border-radius: 10px; padding: 17px 18px; cursor: pointer; text-align: left; transition: border-color var(--dur-base) var(--ease-out), background var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out); font-family: var(--font-sans); margin-bottom: 10px;" style-hover="border-color: var(--gps-purple); background: var(--purple-50); box-shadow: var(--sh-2);">
+            <span style="flex-shrink: 0; width: 26px; height: 26px; border-radius: 999px; background: var(--purple-100); display: flex; align-items: center; justify-content: center; font: var(--w-bold) 12px/1 var(--font-condensed); color: var(--gps-purple); margin-top: 1px;">{{ option.letter }}</span>
+            <span style="flex: 1;">
+              <span style="display: block; font: var(--w-demi) 15px/1.4 var(--font-sans); color: var(--gps-purple-deep);">{{ option.label }}</span>
+              <span style="display: block; font: var(--w-regular) 13px/1.5 var(--font-sans); color: var(--fg-2); margin-top: 3px;">{{ option.sub }}</span>
+            </span>
+          </button>
+        </sc-for>
+      </div>
+
+      <sc-if value="{{ hasBack }}" hint-placeholder-val="{{ false }}">
+        <button sc-camel-on-click="{{ back }}" style="display: inline-flex; align-items: center; gap: 7px; margin-top: 22px; background: none; border: none; color: var(--fg-3); font: var(--w-demi) 12px/1 var(--font-sans); letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; padding: 6px 2px; transition: color var(--dur-base) var(--ease-out);" style-hover="color: var(--gps-purple);">
+          <svg sc-camel-view-box="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" style="width: 13px; height: 13px;"><path d="M10 12L6 8l4-4"></path></svg>
+          Back
+        </button>
+      </sc-if>
+
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isMulti }}" hint-placeholder-val="{{ false }}">
+    <div style="--accent: {{ accent }}; width: 100%; max-width: 640px; display: flex; flex-direction: column; align-items: center;">
+
+      <div style="width: 100%; margin-bottom: 28px;">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 9px;">
+          <span style="font: var(--w-demi) 11px/1.2 var(--font-sans); letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-3);">{{ progressLabel }}</span>
+          <span style="font: var(--w-demi) 11px/1.2 var(--font-condensed); letter-spacing: 0.04em; color: var(--gps-purple);">{{ progressPct }}</span>
+        </div>
+        <div style="height: 4px; background: var(--purple-100); border-radius: 999px; overflow: hidden;">
+          <div style="height: 100%; width: {{ progressWidth }}; background: var(--accent); border-radius: 999px; transition: width 0.5s var(--ease-out);"></div>
+        </div>
+      </div>
+
+      <div style="width: 100%; background: #ffffff; border: 1px solid var(--border-subtle); border-radius: 14px; padding: 40px 40px 36px; box-shadow: var(--sh-3);">
+        <div style="font: var(--w-demi) 11px/1.2 var(--font-sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--gps-purple-light); margin-bottom: 12px;">{{ progressLabel }}</div>
+        <h2 style="font: var(--w-bold) clamp(22px, 3vw, 28px)/1.2 var(--font-sans); letter-spacing: -0.01em; color: var(--gps-purple-deep); margin: 0 0 8px;">{{ questionText }}</h2>
+        <p style="font: var(--w-regular) 14px/1.55 var(--font-sans); color: var(--fg-2); margin: 0 0 24px;">Check all that apply.</p>
+
+        <sc-for list="{{ multiOptions }}" as="option" hint-placeholder-count="4">
+          <button sc-camel-on-click="{{ option.onToggle }}" style="display: flex; align-items: flex-start; gap: 15px; width: 100%; background: {{ option.bg }}; border: 1.5px solid {{ option.borderColor }}; border-radius: 10px; padding: 17px 18px; cursor: pointer; text-align: left; transition: border-color var(--dur-base) var(--ease-out), background var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out); font-family: var(--font-sans); margin-bottom: 10px;" style-hover="border-color: var(--gps-purple); box-shadow: var(--sh-2);">
+            <span style="flex-shrink: 0; width: 26px; height: 26px; border-radius: 7px; background: {{ option.boxBg }}; border: 1.5px solid {{ option.boxBorder }}; display: flex; align-items: center; justify-content: center; margin-top: 1px; color: #fff;">
+              <svg sc-camel-view-box="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="width: 14px; height: 14px; opacity: {{ option.checkOpacity }};"><path d="M3 8.5l3.2 3.2L13 5"></path></svg>
+            </span>
+            <span style="flex: 1;">
+              <span style="display: block; font: var(--w-demi) 15px/1.4 var(--font-sans); color: var(--gps-purple-deep);">{{ option.label }}</span>
+              <span style="display: block; font: var(--w-regular) 13px/1.5 var(--font-sans); color: var(--fg-2); margin-top: 3px;">{{ option.sub }}</span>
+            </span>
+          </button>
+        </sc-for>
+
+        <button sc-camel-on-click="{{ submitMulti }}" style="margin-top: 16px; font: var(--w-bold) 14px/1 var(--font-sans); letter-spacing: 0.08em; text-transform: uppercase; padding: 15px 26px; border-radius: 8px; border: 0; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 10px; background: var(--gps-purple); color: #fff; opacity: {{ submitOpacity }}; transition: filter var(--dur-base) var(--ease-out);" style-hover="filter: brightness(0.88);">
+          See My Recommendation
+          <span style="display: inline-flex; align-items: center;"><svg style="height: 0.8em; width: 0.5em; display: block;"><use href="#gpsChev"></use></svg></span>
+        </button>
+      </div>
+
+      <sc-if value="{{ hasBack }}" hint-placeholder-val="{{ false }}">
+        <button sc-camel-on-click="{{ back }}" style="display: inline-flex; align-items: center; gap: 7px; margin-top: 22px; background: none; border: none; color: var(--fg-3); font: var(--w-demi) 12px/1 var(--font-sans); letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; padding: 6px 2px; transition: color var(--dur-base) var(--ease-out);" style-hover="color: var(--gps-purple);">
+          <svg sc-camel-view-box="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" style="width: 13px; height: 13px;"><path d="M10 12L6 8l4-4"></path></svg>
+          Back
+        </button>
+      </sc-if>
+
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isGate }}" hint-placeholder-val="{{ false }}">
+    <div style="--accent: {{ accent }}; width: 100%; max-width: 640px; display: flex; flex-direction: column; align-items: center;">
+
+      <div style="width: 100%; margin-bottom: 28px;">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 9px;">
+          <span style="font: var(--w-demi) 11px/1.2 var(--font-sans); letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-3);">Last Step</span>
+          <span style="font: var(--w-demi) 11px/1.2 var(--font-condensed); letter-spacing: 0.04em; color: var(--gps-purple);">100%</span>
+        </div>
+        <div style="height: 4px; background: var(--purple-100); border-radius: 999px; overflow: hidden;">
+          <div style="height: 100%; width: 100%; background: var(--accent); border-radius: 999px; transition: width 0.5s var(--ease-out);"></div>
+        </div>
+      </div>
+
+      <div style="width: 100%; background: #ffffff; border: 1px solid var(--border-subtle); border-radius: 14px; padding: 40px 40px 36px; box-shadow: var(--sh-3);">
+        <div style="font: var(--w-demi) 11px/1.2 var(--font-sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--gps-purple); margin-bottom: 12px;">Your Recommendation Is Ready</div>
+        <h2 style="font: var(--w-bold) clamp(22px, 3vw, 28px)/1.2 var(--font-sans); letter-spacing: -0.01em; color: var(--gps-purple-deep); margin: 0 0 8px;">Tell us about you to see it</h2>
+        <p style="font: var(--w-regular) 14px/1.55 var(--font-sans); color: var(--fg-2); margin: 0 0 24px;">A GPS team member may follow up about your program. We do not sell your information.</p>
+
+        <div style="display: flex; flex-direction: column; gap: 14px;">
+          <sc-for list="{{ gateFields }}" as="field" hint-placeholder-count="4">
+            <label style="display: flex; flex-direction: column; gap: 6px;">
+              <span style="font: var(--w-demi) 12px/1.3 var(--font-sans); color: var(--gps-purple-deep);">{{ field.label }}</span>
+              <input type="{{ field.type }}" name="{{ field.name }}" autocomplete="{{ field.autocomplete }}" maxlength="120" value="{{ field.value }}" sc-camel-on-change="{{ field.onChange }}" style="font: var(--w-regular) 15px/1.4 var(--font-sans); color: var(--fg-1); padding: 12px 14px; border: 1px solid {{ field.border }}; border-radius: 8px; background: #fff; outline: none; transition: border-color var(--dur-base) var(--ease-out);" style-focus="border-color: var(--gps-purple);">
+              <span style="display: {{ field.errDisplay }}; font: var(--w-regular) 12px/1.4 var(--font-sans); color: #b3261e;">{{ field.err }}</span>
+            </label>
+          </sc-for>
+        </div>
+
+        <div style="margin-top: 26px; font: var(--w-demi) 12px/1.3 var(--font-sans); color: var(--gps-purple-deep); margin-bottom: 10px;">Does your property or team typically attend industry tradeshows?</div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <sc-for list="{{ showOptions }}" as="opt" hint-placeholder-count="3">
+            <button sc-camel-on-click="{{ opt.onClick }}" style="font: var(--w-demi) 14px/1 var(--font-sans); padding: 12px 18px; border-radius: 999px; cursor: pointer; background: {{ opt.bg }}; color: {{ opt.color }}; border: 1.5px solid {{ opt.borderColor }}; transition: border-color var(--dur-base) var(--ease-out), background var(--dur-base) var(--ease-out);" style-hover="border-color: var(--gps-purple);">{{ opt.label }}</button>
+          </sc-for>
+        </div>
+        <span style="display: {{ showsErrDisplay }}; margin-top: 6px; font: var(--w-regular) 12px/1.4 var(--font-sans); color: #b3261e;">{{ showsErr }}</span>
+
+        <sc-if value="{{ askEvents }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top: 22px; font: var(--w-demi) 12px/1.3 var(--font-sans); color: var(--gps-purple-deep); margin-bottom: 10px;">Which ones have you attended in the past 2 years?</div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px;">
+            <sc-for list="{{ eventOptions }}" as="ev" hint-placeholder-count="9">
+              <button sc-camel-on-click="{{ ev.onToggle }}" style="display: flex; align-items: center; gap: 12px; width: 100%; background: {{ ev.bg }}; border: 1.5px solid {{ ev.borderColor }}; border-radius: 10px; padding: 12px 14px; cursor: pointer; text-align: left; font-family: var(--font-sans); transition: border-color var(--dur-base) var(--ease-out), background var(--dur-base) var(--ease-out);" style-hover="border-color: var(--gps-purple);">
+                <span style="flex-shrink: 0; width: 22px; height: 22px; border-radius: 6px; background: {{ ev.boxBg }}; border: 1.5px solid {{ ev.boxBorder }}; display: flex; align-items: center; justify-content: center; color: #fff;">
+                  <svg sc-camel-view-box="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="width: 12px; height: 12px; opacity: {{ ev.checkOpacity }};"><path d="M3 8.5l3.2 3.2L13 5"></path></svg>
+                </span>
+                <span style="font: var(--w-demi) 14px/1.35 var(--font-sans); color: var(--gps-purple-deep);">{{ ev.label }}</span>
+              </button>
+            </sc-for>
+          </div>
+          <sc-if value="{{ askOther }}" hint-placeholder-val="{{ false }}">
+            <label style="display: flex; flex-direction: column; gap: 6px; margin-top: 12px;">
+              <span style="font: var(--w-demi) 12px/1.3 var(--font-sans); color: var(--gps-purple-deep);">Other tradeshow</span>
+              <input type="text" name="other-show" maxlength="120" value="{{ otherValue }}" sc-camel-on-change="{{ onOther }}" style="font: var(--w-regular) 15px/1.4 var(--font-sans); color: var(--fg-1); padding: 12px 14px; border: 1px solid var(--border-strong); border-radius: 8px; background: #fff; outline: none;" style-focus="border-color: var(--gps-purple);">
+            </label>
+          </sc-if>
+          <span style="display: {{ eventsErrDisplay }}; margin-top: 6px; font: var(--w-regular) 12px/1.4 var(--font-sans); color: #b3261e;">{{ eventsErr }}</span>
+        </sc-if>
+
+        <button sc-camel-on-click="{{ submitLead }}" style="margin-top: 28px; font: var(--w-bold) 14px/1 var(--font-sans); letter-spacing: 0.08em; text-transform: uppercase; padding: 15px 26px; border-radius: 8px; border: 0; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 10px; background: var(--gps-purple); color: #fff; transition: filter var(--dur-base) var(--ease-out);" style-hover="filter: brightness(0.88);">
+          See My Recommendation
+          <span style="display: inline-flex; align-items: center;"><svg style="height: 0.8em; width: 0.5em; display: block;"><use href="#gpsChev"></use></svg></span>
+        </button>
+      </div>
+
+      <button sc-camel-on-click="{{ back }}" style="display: inline-flex; align-items: center; gap: 7px; margin-top: 22px; background: none; border: none; color: var(--fg-3); font: var(--w-demi) 12px/1 var(--font-sans); letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: color var(--dur-base) var(--ease-out);" style-hover="color: var(--gps-purple);">
+        <svg sc-camel-view-box="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" style="width: 13px; height: 13px;"><path d="M10 12L6 8l4-4"></path></svg>
+        Back
+      </button>
+
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
+    <div style="--accent: {{ accent }}; width: 100%; max-width: 640px; display: flex; flex-direction: column; align-items: center;">
+
+      <div style="width: 100%; background: #ffffff; border: 1px solid var(--border-subtle); border-top: 4px solid var(--accent); border-radius: 14px; padding: 14px 0 0; box-shadow: var(--sh-4); overflow: hidden;">
+        <div style="padding: 30px 40px 38px;">
+          <div style="font: var(--w-demi) 11px/1.2 var(--font-sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px;">Recommended Model</div>
+          <h2 style="font: var(--w-bold) clamp(30px, 5vw, 44px)/1.06 var(--font-sans); letter-spacing: 0.005em; text-transform: uppercase; color: var(--gps-purple-deep); margin: 0 0 18px;">{{ resultTitle }}</h2>
+          <p style="font: var(--w-regular) 16px/1.65 var(--font-sans); color: var(--fg-2); margin: 0 0 30px; max-width: 500px;">{{ resultDesc }}</p>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 32px;">
+            <sc-for list="{{ pillars }}" as="pillar" hint-placeholder-count="4">
+              <div style="background: var(--bg-subtle); border: 1px solid var(--purple-100); border-radius: 10px; padding: 15px 16px;">
+                <div style="font: var(--w-demi) 10px/1.2 var(--font-sans); letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-3); margin-bottom: 5px;">{{ pillar.label }}</div>
+                <div style="font: var(--w-demi) 14px/1.4 var(--font-sans); color: var(--gps-purple-deep);">{{ pillar.value }}</div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button sc-camel-on-click="{{ openCase }}" style="font: var(--w-bold) 14px/1 var(--font-sans); letter-spacing: 0.08em; text-transform: uppercase; padding: 14px 24px; border-radius: 8px; border: 0; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 10px; background: var(--accent); color: #fff; transition: filter var(--dur-base) var(--ease-out);" style-hover="filter: brightness(0.88);">
+              {{ resultCta }}
+              <span style="display: inline-flex; align-items: center;"><svg style="height: 0.8em; width: 0.5em; display: block;"><use href="#gpsChev"></use></svg></span>
+            </button>
+            <button sc-camel-on-click="{{ restart }}" style="font: var(--w-bold) 14px/1 var(--font-sans); letter-spacing: 0.08em; text-transform: uppercase; padding: 12px 22px; border-radius: 8px; border: 2px solid var(--border-strong); cursor: pointer; background: #fff; color: var(--fg-2); transition: border-color var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out);" style-hover="border-color: var(--gps-purple); color: var(--gps-purple);">Start Over</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="width: 100%; margin-top: 32px;">
+        <div style="font: var(--w-demi) 11px/1.2 var(--font-sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--gps-purple); margin-bottom: 6px;">Top Options for Your Property</div>
+        <p style="font: var(--w-regular) 14px/1.55 var(--font-sans); color: var(--fg-2); margin: 0 0 16px; max-width: 480px;">The GPS programs that fit the model above and the answers you gave.</p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px;">
+          <sc-for list="{{ products }}" as="product" hint-placeholder-count="4">
+            <div style="background: #ffffff; border: 1px solid var(--border-subtle); border-radius: 12px; padding: 20px 21px 21px; box-shadow: var(--sh-1); display: flex; flex-direction: column; gap: 9px;">
+              <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 10px;">
+                <span style="font: var(--w-demi) 9.5px/1.2 var(--font-sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-3);">{{ product.tag }}</span>
+                <span style="display: {{ product.showRank }}; align-items: center; background: var(--gps-purple); color: #fff; font: var(--w-bold) 9px/1 var(--font-sans); letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 9px; border-radius: 999px;">{{ product.rank }}</span>
+              </div>
+              <div style="font: var(--w-bold) 18px/1.2 var(--font-sans); color: var(--gps-purple-deep);">{{ product.name }}</div>
+              <div style="font: var(--w-regular) 13.5px/1.55 var(--font-sans); color: var(--fg-2);">{{ product.desc }}</div>
+              <div style="margin-top: 4px; padding-top: 12px; border-top: 1px solid var(--purple-100); display: flex; gap: 9px; align-items: flex-start;">
+                <span style="flex-shrink: 0; font: var(--w-demi) 9.5px/1.5 var(--font-sans); letter-spacing: 0.12em; text-transform: uppercase; color: var(--gps-purple);">Why</span>
+                <span style="flex: 1; font: var(--w-demi) 13px/1.5 var(--font-sans); color: var(--gps-purple-deep);">{{ product.why }}</span>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="width: 100%; margin-top: 26px;">
+        <div style="font: var(--w-demi) 10px/1.2 var(--font-sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-3); margin-bottom: 13px;">Your Answers</div>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <sc-for list="{{ trail }}" as="item" hint-placeholder-count="4">
+            <div style="display: flex; gap: 12px; align-items: baseline; font: var(--w-regular) 13px/1.5 var(--font-sans);">
+              <span style="flex-shrink: 0; font: var(--w-demi) 12px/1.5 var(--font-condensed); color: var(--gps-purple); min-width: 26px;">{{ item.q }}</span>
+              <span style="color: var(--fg-1);">{{ item.a }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isModule }}" hint-placeholder-val="{{ false }}">
+    <div style="--accent: {{ accent }}; width: 100%; max-width: 720px; display: flex; flex-direction: column; align-items: stretch;">
+
+      <button sc-camel-on-click="{{ backToResult }}" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 7px; margin-bottom: 20px; background: none; border: none; color: var(--fg-3); font: var(--w-demi) 12px/1 var(--font-sans); letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; padding: 6px 2px; transition: color var(--dur-base) var(--ease-out);" style-hover="color: var(--gps-purple);">
+        <svg sc-camel-view-box="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" style="width: 13px; height: 13px;"><path d="M10 12L6 8l4-4"></path></svg>
+        Back to recommendation
+      </button>
+
+      <div style="width: 100%; background: #ffffff; border: 1px solid var(--border-subtle); border-top: 4px solid var(--accent); border-radius: 14px; box-shadow: var(--sh-4); overflow: hidden;">
+        <div style="padding: 32px 40px 36px;">
+          <div style="font: var(--w-demi) 11px/1.2 var(--font-sans); letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px;">{{ modEyebrow }}</div>
+          <h2 style="font: var(--w-bold) clamp(24px, 4vw, 34px)/1.1 var(--font-sans); letter-spacing: -0.01em; color: var(--gps-purple-deep); margin: 0 0 16px;">{{ modTitle }}</h2>
+          <p style="font: var(--w-regular) 16px/1.65 var(--font-sans); color: var(--fg-2); margin: 0 0 30px; max-width: 560px;">{{ modScenario }}</p>
+
+          <div style="font: var(--w-demi) 10px/1.2 var(--font-sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-3); margin-bottom: 14px;">How It Works</div>
+          <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 34px;">
+            <sc-for list="{{ modSteps }}" as="step" hint-placeholder-count="3">
+              <div style="display: flex; gap: 15px; align-items: flex-start; background: var(--bg-subtle); border: 1px solid var(--purple-100); border-radius: 10px; padding: 16px 18px;">
+                <span style="flex-shrink: 0; width: 26px; height: 26px; border-radius: 999px; background: var(--accent); display: flex; align-items: center; justify-content: center; font: var(--w-bold) 12px/1 var(--font-condensed); color: #fff; margin-top: 1px;">{{ step.n }}</span>
+                <span style="flex: 1;">
+                  <span style="display: block; font: var(--w-demi) 14px/1.4 var(--font-sans); color: var(--gps-purple-deep); text-transform: uppercase; letter-spacing: 0.06em;">{{ step.label }}</span>
+                  <span style="display: block; font: var(--w-regular) 14px/1.55 var(--font-sans); color: var(--fg-2); margin-top: 4px;">{{ step.value }}</span>
+                </span>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="font: var(--w-demi) 10px/1.2 var(--font-sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-3); margin-bottom: 14px;">Model This Property</div>
+          <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 34px;">
+            <sc-for list="{{ modInputs }}" as="input" hint-placeholder-count="3">
+              <label style="display: flex; flex-direction: column; gap: 6px;">
+                <span style="font: var(--w-demi) 12px/1.3 var(--font-sans); color: var(--gps-purple-deep);">{{ input.label }}</span>
+                <input type="text" placeholder="{{ input.hint }}" style="font: var(--w-regular) 14px/1.4 var(--font-sans); color: var(--fg-1); padding: 11px 14px; border: 1px solid var(--border-strong); border-radius: 8px; background: #fff; outline: none; transition: border-color var(--dur-base) var(--ease-out);" style-focus="border-color: var(--gps-purple);">
+              </label>
+            </sc-for>
+          </div>
+
+          <div style="font: var(--w-demi) 10px/1.2 var(--font-sans); letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-3); margin-bottom: 14px;">Illustrative Outcomes</div>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 34px;">
+            <sc-for list="{{ modOutcomes }}" as="out" hint-placeholder-count="3">
+              <div style="background: var(--purple-50); border: 1px solid var(--purple-100); border-radius: 10px; padding: 18px 14px; text-align: center;">
+                <div style="font: var(--w-bold) clamp(24px, 4vw, 32px)/1 var(--font-condensed); color: var(--accent); letter-spacing: -0.01em;">{{ out.stat }}</div>
+                <div style="font: var(--w-regular) 12px/1.35 var(--font-sans); color: var(--fg-2); margin-top: 7px;">{{ out.label }}</div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+            <button style="font: var(--w-bold) 14px/1 var(--font-sans); letter-spacing: 0.08em; text-transform: uppercase; padding: 14px 24px; border-radius: 8px; border: 0; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 10px; background: var(--accent); color: #fff; transition: filter var(--dur-base) var(--ease-out);" style-hover="filter: brightness(0.88);">
+              Build This Program
+              <span style="display: inline-flex; align-items: center;"><svg style="height: 0.8em; width: 0.5em; display: block;"><use href="#gpsChev"></use></svg></span>
+            </button>
+            <button sc-camel-on-click="{{ restart }}" style="font: var(--w-bold) 14px/1 var(--font-sans); letter-spacing: 0.08em; text-transform: uppercase; padding: 12px 22px; border-radius: 8px; border: 2px solid var(--border-strong); cursor: pointer; background: #fff; color: var(--fg-2); transition: border-color var(--dur-base) var(--ease-out), color var(--dur-base) var(--ease-out);" style-hover="border-color: var(--gps-purple); color: var(--gps-purple);">Start Over</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script="" data-props="{&quot;$preview&quot;: {&quot;width&quot;: 760, &quot;height&quot;: 820}, &quot;headline&quot;: {&quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;Find Your Gifting Model&quot;}, &quot;intro&quot;: {&quot;editor&quot;: &quot;text&quot;, &quot;default&quot;: &quot;A few questions about your program, your budget, and your database — and we'll recommend the right structure for your property.&quot;}, &quot;accent&quot;: {&quot;editor&quot;: &quot;color&quot;, &quot;default&quot;: &quot;#582c83&quot;, &quot;options&quot;: [&quot;#582c83&quot;, &quot;#7a4fb8&quot;, &quot;#8208d1&quot;, &quot;#2e034a&quot;]}}">
+class Component extends DCLogic {
+  state = { answers: {}, order: [], multiSel: [], resultKey: null, showModule: false,
+    lead: { name: '', email: '', phone: '', casino: '', shows: '', events: [], other: '' },
+    unlocked: false, showErrors: false };
+
+  // ── Lead gate + response log ────────────────────────────────────────────
+  // Every answer and the final lead form are posted to the GPS logging service,
+  // which keeps one row per visitor (keyed on sessionId) and mirrors it to
+  // Airtable. Posts go through a localStorage outbox so a demo on a dead casino
+  // floor still gets logged once the tablet is back online. The result is never
+  // held hostage to the network: the gate unlocks on a valid form, sent or not.
+  LOG_URL = 'https://design-kiosk.gpsteam.com/selector/api/responses';
+
+  logUrl() {
+    // Testing hook: point a browser at a local server without rebuilding.
+    try { return localStorage.getItem('gps-selector-log-url') || this.LOG_URL; } catch (e) { return this.LOG_URL; }
+  }
+  OUTBOX_KEY = 'gps-selector-outbox';
+
+  SHOW_ANSWERS = [
+    { key: 'yes', label: 'Yes' },
+    { key: 'no', label: 'No' },
+    { key: 'exec', label: 'Only Executives' }
+  ];
+
+  EVENTS = ['IGA', 'G2E', 'Raving/CMTC', 'Casino Connect', 'OIGA', 'WIGA', 'ICE',
+    'Native Nations (AI Within Tribal Gaming)', 'Other'];
+
+  componentDidMount() {
+    this.flushOutbox();
+    this._onOnline = () => this.flushOutbox();
+    window.addEventListener('online', this._onOnline);
+    this._flushTimer = setInterval(() => this.flushOutbox(), 30000);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('online', this._onOnline);
+    clearInterval(this._flushTimer);
+  }
+
+  newId() {
+    if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+      const r = Math.random() * 16 | 0;
+      return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+  }
+
+  session() {
+    if (!this._session) this._session = { id: this.newId(), startedAt: new Date().toISOString(), seq: 0 };
+    return this._session;
+  }
+
+  readOutbox() {
+    try { return JSON.parse(localStorage.getItem(this.OUTBOX_KEY) || '[]'); } catch (e) { return []; }
+  }
+
+  writeOutbox(items) {
+    // Cap it: a tablet offline for a whole show should not grow without bound.
+    try { localStorage.setItem(this.OUTBOX_KEY, JSON.stringify(items.slice(-500))); } catch (e) {}
+  }
+
+  // Snapshot of where this visitor is. Each post carries the full picture, so the
+  // server can apply the newest seq and ignore stale replays in any order.
+  logEvent(event) {
+    const st = this.state;
+    const s = this.session();
+    s.seq += 1;
+    const answers = {};
+    st.order.forEach(id => {
+      const v = st.answers[id];
+      if (v !== undefined) answers[id] = id === 'PROGRAMS' ? v.map(k => this.optionFor(id, k).label) : this.optionFor(id, v).label;
+    });
+    const ev = this.currentStep() ? null : this.evaluate();
+    const payload = {
+      sessionId: s.id, seq: s.seq, event, startedAt: s.startedAt, at: new Date().toISOString(),
+      order: st.order, answers,
+      result: ev ? this.RESULTS[ev.key].title : null, score: ev ? ev.score : null,
+      source: location.protocol === 'file:' ? 'offline-file' : location.host,
+      referrer: document.referrer || '', userAgent: navigator.userAgent
+    };
+    if (event === 'lead') {
+      const l = st.lead;
+      payload.lead = {
+        name: l.name.trim(), email: l.email.trim(), phone: l.phone.trim(), casino: l.casino.trim(),
+        tradeshows: (this.SHOW_ANSWERS.find(o => o.key === l.shows) || {}).label || '',
+        events: l.shows === 'no' ? [] : l.events,
+        otherEvent: l.shows !== 'no' && l.events.includes('Other') ? l.other.trim() : ''
+      };
+    }
+    this.writeOutbox([...this.readOutbox(), payload]);
+    this.flushOutbox();
+  }
+
+  async flushOutbox() {
+    if (this._flushing || !this.readOutbox().length) return;
+    this._flushing = true;
+    try {
+      while (true) {
+        const items = this.readOutbox();
+        if (!items.length) break;
+        const batch = items.slice(0, 25);
+        let res;
+        try {
+          res = await fetch(this.logUrl(), {
+            method: 'POST', headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ responses: batch }), keepalive: true
+          });
+        } catch (e) { break; }                // offline: keep everything for later
+        // Clear only what the service confirms it stored, or what it rejected as
+        // malformed (a 400 would be rejected forever and wedge the queue). Anything
+        // else — 5xx, 429, a proxy's HTML page — stays queued for the next try.
+        let body = null;
+        try { body = await res.json(); } catch (e) {}
+        const stored = res.ok && body && body.ok === true;
+        if (!stored && res.status !== 400 && res.status !== 413) break;
+        const sent = new Set(batch.map(b => b.sessionId + ':' + b.seq));
+        this.writeOutbox(this.readOutbox().filter(b => !sent.has(b.sessionId + ':' + b.seq)));
+      }
+    } finally {
+      this._flushing = false;
+    }
+  }
+
+  setLead(field, value) {
+    this.setState({ lead: Object.assign({}, this.state.lead, { [field]: value }) });
+  }
+
+  toggleEvent(name) {
+    const ev = this.state.lead.events;
+    this.setLead('events', ev.includes(name) ? ev.filter(e => e !== name) : [...ev, name]);
+  }
+
+  leadErrors() {
+    const l = this.state.lead;
+    const e = {};
+    if (!l.name.trim()) e.name = 'Enter your name.';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(l.email.trim())) e.email = 'Enter a valid email address.';
+    if (l.phone.trim() && l.phone.replace(/\D/g, '').length < 10) e.phone = 'Enter a full phone number, or leave it blank.';
+    if (!l.casino.trim()) e.casino = 'Enter your casino or property name.';
+    if (!l.shows) e.shows = 'Choose one.';
+    if (l.shows && l.shows !== 'no') {
+      if (!l.events.length) e.events = 'Choose at least one, or pick Other.';
+      else if (l.events.includes('Other') && !l.other.trim()) e.events = 'Tell us which other tradeshow.';
+    }
+    return e;
+  }
+
+  submitLead() {
+    if (Object.keys(this.leadErrors()).length) {
+      this.setState({ showErrors: true });
+      return;
+    }
+    this.logEvent('lead');
+    this.setState({ unlocked: true, showErrors: false });
+    window.scrollTo(0, 0);
+  }
+
+  STEPS = {
+    GOAL: {
+      q: "What is leadership's main initiative for next year?",
+      note: 'Sets the strategic frame for everything that follows.',
+      options: [
+        { key: 'reduce', label: 'Reduce budgets', sub: 'Protect reinvestment dollars without gutting the guest experience.', score: -2 },
+        { key: 'visits', label: 'Drive incremental visits', sub: 'More trips, more frequency, more time on device.', score: -1 },
+        { key: 'behavior', label: 'Change player behavior', sub: 'Move a specific segment up, back, or into a new pattern.', score: 1 }
+      ]
+    },
+    BUDGET: {
+      q: 'What is your current gifting budget?',
+      note: 'Per player, at your primary qualified tier.',
+      options: [
+        { key: 'b10', label: '$10 – $14', sub: '', score: -3 },
+        { key: 'b15', label: '$15 – $18', sub: '', score: -2 },
+        { key: 'b19', label: '$19 – $24', sub: '', score: -1 },
+        { key: 'b25', label: '$25 – $35', sub: '', score: 1 },
+        { key: 'b40', label: '$40+', sub: '', score: 2 }
+      ]
+    },
+    VIPUSE: {
+      q: 'Do you currently utilize VIP gifting?',
+      note: 'A separate gift track for your top players, above the mass program.',
+      options: [
+        { key: 'vip_yes', label: 'Yes', sub: 'We already run a distinct gift for our highest-worth players.', score: 1 },
+        { key: 'vip_no', label: 'No', sub: 'Everyone qualified receives the same program.', score: -1 }
+      ]
+    },
+    VIPBUDGET: {
+      q: 'What is your current VIP gifting budget?',
+      note: 'Per player, at your top tier.',
+      options: [
+        { key: 'v50', label: '$50+', sub: '', score: 1 },
+        { key: 'v75', label: '$75+', sub: '', score: 2 },
+        { key: 'v150', label: '$150+', sub: '', score: 3 }
+      ]
+    },
+    TIERS: {
+      q: 'Do you have meaningful tier differentiation in your loyalty program?',
+      note: 'How sharply the database separates by worth.',
+      options: [
+        { key: 'single', label: 'Single tier or minimal differentiation', sub: 'Most qualified players are treated similarly regardless of ADT.', score: -1 },
+        { key: 'multi', label: 'Multiple tiers with a distinct high-worth segment', sub: 'A meaningful VIP group that warrants elevated treatment.', score: 1 },
+        { key: 'vip', label: 'Primarily targeting high-worth players only', sub: 'This program is built for the top of the database.', score: 2 }
+      ]
+    },
+    DEMO: {
+      q: 'How would you describe your core qualified player base?',
+      note: 'The people who actually show up for gift days.',
+      options: [
+        { key: 'older', label: 'Primarily 55+, less tech-comfortable, rural', sub: 'Address quality gaps, limited digital access, in-person preference.', score: -2 },
+        { key: 'mixed', label: 'Mixed age with moderate tech comfort', sub: 'A broad base with varying digital engagement across segments.', score: 0 },
+        { key: 'younger', label: 'Younger, digitally engaged, suburban or urban', sub: 'Players who expect digital convenience and personalization.', score: 2 }
+      ]
+    },
+    REDUCE: {
+      q: 'Which of the following would you be most comfortable with to reduce budget?',
+      note: 'The lever you are willing to pull first.',
+      options: [
+        { key: 'reseg', label: 'Re-assess segmentation and who we invite for gift days', sub: 'Same gift, fewer and better-qualified guests.', score: -2 },
+        { key: 'dayof', label: 'Reduce qualified players, keep the current budget', sub: 'Pre-qualified players drop off, protected by a day-of earn-and-get for play-up.', score: 1 },
+        { key: 'consolidate', label: 'Consolidate gifting vendors and ask for a rebate program', sub: 'A sourcing and volume play rather than a program change.', score: -2 }
+      ]
+    },
+    RAINCHECK: {
+      q: 'Does the property need to worry about rain checks?',
+      note: 'Guests who qualify but leave without a gift in hand.',
+      options: [
+        { key: 'rain_yes', label: 'Yes', sub: 'We run out, we owe guests, and we chase them down later.', score: 2 },
+        { key: 'rain_no', label: 'No', sub: 'We forecast well and rarely leave a qualified guest empty-handed.', score: -2 }
+      ]
+    },
+    ADDPROG: {
+      q: 'Would you be interested in adding additional programs or enhancing your gifting strategy?',
+      note: 'Appetite for structural change, not just a better gift.',
+      options: [
+        { key: 'open', label: 'Yes', sub: 'We are open to new mechanics if the case is there.', score: 0 },
+        { key: 'closed', label: 'No', sub: 'Keep the current structure — execute it better.', score: -1 }
+      ]
+    },
+    BEHAVIOR: {
+      q: 'What players would you like to change the behavior of?',
+      note: 'The segment this program is aimed at moving.',
+      options: [
+        { key: 'vips', label: 'VIPs', sub: 'Protect and grow the top of the database.', score: 1 },
+        { key: 'inactive', label: 'Inactive database players', sub: 'Players who have lapsed and are not responding to current offers.', score: 2 },
+        { key: 'developing', label: 'Developing players', sub: 'Mid-tier guests with headroom to play up.', score: 1 },
+        { key: 'new', label: 'New guests', sub: 'First impressions and early trip-two conversion.', score: -2 }
+      ]
+    }
+  };
+
+  PROGRAMS = {
+    q: 'What ideas are interesting to you?',
+    options: [
+      { key: 'p_bank', label: 'Adding the ability to bank points', sub: 'Players accumulate toward a larger reward over time.', score: 2, floor: 'HYBRID' },
+      { key: 'p_vip', label: 'Providing custom experiences for VIPs', sub: 'Elevated, personalized recognition for top players.', score: 1 },
+      { key: 'p_spend', label: 'Allowing players to continuously spend points', sub: 'An always-on storefront rather than event-driven gifting.', score: 3, floor: 'HYBRID' },
+      { key: 'p_budget', label: 'Increasing gifting budget', sub: 'More value per player inside the existing structure.', score: -1 }
+    ]
+  };
+
+  RESULTS = {
+    PHYSICAL: {
+      accent: '#582c83',
+      title: 'Traditional Gifting',
+      desc: "A GPS-managed continuity program \u2014 themed gifts sourced, branded, warehoused, and delivered to your property. Maximum brand control, on-floor traffic lift, and the communal distribution moment that drives word-of-mouth.",
+      pillars: [
+        { label: 'Delivery', value: 'On-property pickup' },
+        { label: 'Player choice', value: 'Curated by GPS' },
+        { label: 'Budget model', value: 'Fixed cost per unit' },
+        { label: 'Best for', value: 'Visit-driven programs, older demographics, tight budgets' }
+      ],
+      cta: 'Case Study'
+    },
+    HYBRID: {
+      accent: '#7a4fb8',
+      title: 'Hybrid Gifting Program',
+      desc: "Physical continuity for your volume tiers \u2014 bulk economics keep perceived value high. Choice-based dropship or VIP events for your high-worth players \u2014 elevated budget, home delivery, and the recognition top players expect.",
+      pillars: [
+        { label: 'Delivery', value: 'On-property + home delivery' },
+        { label: 'Player choice', value: 'Curated at base / Choice at top tier' },
+        { label: 'Budget model', value: 'Fixed base + variable upper tier' },
+        { label: 'Best for', value: 'Multi-tier programs, mixed demographics' }
+      ],
+      cta: 'Case Study'
+    },
+    DIGITAL: {
+      accent: '#8208d1',
+      title: 'Full Digital Dropship',
+      desc: "ezGIFT\u00ae powers a branded online storefront with deep catalog integration \u2014 players choose from a wide selection and gifts ship directly to their homes. Maximum personalization, no on-property logistics, built-in CRM touchpoints.",
+      pillars: [
+        { label: 'Delivery', value: 'Direct to player home' },
+        { label: 'Player choice', value: 'Full catalog selection' },
+        { label: 'Budget model', value: 'Pay per redemption' },
+        { label: 'Best for', value: 'High-worth segments, digitally engaged players' }
+      ],
+      cta: 'Case Study'
+    }
+  };
+
+  MODULES = {
+    PHYSICAL: {
+      accent: '#582c83',
+      eyebrow: 'Case Study \u00b7 Traditional Gifting',
+      title: 'Riverbend Casino \u2014 Monthly Continuity',
+      scenario: "A regional property wants to lift midweek trips from its core 55+ database without adding fulfillment headaches or diluting the branded on-floor moment.",
+      steps: [
+        { label: 'Setup', value: "GPS sources and brands a 12-month themed gift calendar to the property's reinvestment budget." },
+        { label: 'Qualify', value: "Players earn each month's gift by hitting a points or trip threshold set by marketing." },
+        { label: 'Distribute', value: 'GPS warehouses and delivers to the property; guests redeem at a staffed pickup on the floor.' }
+      ],
+      outcomes: [
+        { stat: '+18%', label: 'Midweek trip frequency' },
+        { stat: '0', label: 'Items warehoused by property' },
+        { stat: '100%', label: 'On-time delivery' }
+      ],
+      inputs: [
+        { label: 'Reinvestment / player', hint: 'e.g. $25 per redemption' },
+        { label: 'Qualified player count', hint: 'e.g. 8,000 / month' },
+        { label: 'Trip threshold', hint: 'e.g. 2 trips or 500 points' }
+      ]
+    },
+    HYBRID: {
+      accent: '#7a4fb8',
+      eyebrow: 'Case Study \u00b7 Hybrid Gifting',
+      title: 'Grand Mesa \u2014 Tiered Continuity + VIP Choice',
+      scenario: "A multi-tier property wants bulk economics for its volume tiers while giving high-worth players home-delivered choice and elevated recognition.",
+      steps: [
+        { label: 'Base tiers', value: 'Physical continuity gifts sourced in volume keep perceived value high at a fixed cost.' },
+        { label: 'Top tier', value: 'VIP players select from a curated dropship catalog delivered to their homes.' },
+        { label: 'Manage', value: 'GPS runs both tracks under one program, one invoice, one point of contact.' }
+      ],
+      outcomes: [
+        { stat: '+31%', label: 'VIP reinvestment efficiency' },
+        { stat: '2', label: 'Tracks, one program' },
+        { stat: '+22%', label: 'Top-tier retention' }
+      ],
+      inputs: [
+        { label: 'Base tier budget / player', hint: 'e.g. $30 per redemption' },
+        { label: 'VIP budget / player', hint: 'e.g. $120 per redemption' },
+        { label: 'VIP segment size', hint: 'e.g. top 8% of database' }
+      ]
+    },
+    DIGITAL: {
+      accent: '#8208d1',
+      eyebrow: 'Case Study \u00b7 Full Digital Dropship',
+      title: 'Skyline \u2014 ezGIFT\u00ae Branded Storefront',
+      scenario: "A property with a younger, digitally engaged high-worth base wants maximum personalization and CRM touchpoints without any on-property logistics.",
+      steps: [
+        { label: 'Launch', value: 'ezGIFT\u00ae stands up a custom-branded storefront tied to the loyalty catalog.' },
+        { label: 'Redeem', value: 'Players browse a full catalog and redeem points; gifts ship directly to their homes.' },
+        { label: 'Engage', value: 'Every redemption becomes a CRM touchpoint for re-marketing and offers.' }
+      ],
+      outcomes: [
+        { stat: '+27%', label: 'Redemption rate' },
+        { stat: '24/7', label: 'Always-on storefront' },
+        { stat: '0', label: 'On-property logistics' }
+      ],
+      inputs: [
+        { label: 'Points value / redemption', hint: 'e.g. $75 catalog value' },
+        { label: 'Active digital players', hint: 'e.g. 5,500' },
+        { label: 'Redemption window', hint: 'e.g. rolling 90 days' }
+      ]
+    }
+  };
+
+  // GPS products ranked against the answers, most relevant first.
+  products() {
+    const a = this.state.answers;
+    const prog = Array.isArray(a.PROGRAMS) ? a.PROGRAMS : [];
+    const key = this.state.resultKey;
+
+    const build = (id, name, tag, desc, rules, fallback, eligible) => {
+      if (eligible === false) return null;
+      let score = 0;
+      let why = fallback;
+      let found = false;
+      rules.forEach(r => {
+        if (!r.when) return;
+        score += r.score;
+        if (!found && r.why) { why = r.why; found = true; }
+      });
+      return { id, name, tag, desc, why, score };
+    };
+
+    const list = [
+      build('sonar', 'Sonar AI', 'Outreach',
+        'An AI voice and SMS host that reaches players about the gift they have already earned \u2014 real two-way conversations under your property\u2019s own persona, with redemption lift measured against a holdout control.',
+        [
+          { when: a.BEHAVIOR === 'inactive', score: 6, why: 'Inactive players are your target. Sonar calls and texts them about a gift already waiting \u2014 a reason to come back that is not another mailer.' },
+          { when: a.RAINCHECK === 'rain_yes', score: 4, why: 'Every guest owed a rain check gets a real follow-up conversation instead of a note in a spreadsheet.' },
+          { when: a.DEMO === 'older', score: 4, why: 'Your property\u2019s name on the lock screen is the single biggest driver of answer rates with a 55+ base \u2014 they pick up, and they show up.' },
+          { when: a.GOAL === 'visits', score: 3, why: 'Reaches every qualified player a day or two out to confirm the trip, then follows up with anyone who never redeemed.' },
+          { when: a.BEHAVIOR === 'developing', score: 3, why: 'Your hosts cover VIPs. Sonar covers the middle tier where the volume and the untapped redemption actually live.' },
+          { when: a.GOAL === 'reduce', score: 2, why: 'Lifts redemption against the same spend \u2014 budget recovered rather than budget cut.' },
+          { when: a.GOAL === 'behavior', score: 2, why: 'Behavior changes when someone actually reaches the player. Sonar is the host you cannot staff.' },
+          { when: a.VIPUSE === 'vip_no', score: 1 }
+        ],
+        'Puts a host on every qualified player, not just the ones your team has time to call.'),
+
+      build('periscope', 'Periscope', 'Acquisition',
+        'Finds high-potential players in your market who are not yet in your database, and shows where they are playing instead.',
+        [
+          { when: a.BEHAVIOR === 'new', score: 6, why: 'New guests are your stated target \u2014 Periscope finds them before they pick a competitor.' },
+          { when: a.GOAL === 'visits', score: 3, why: 'Incremental visits have to come from somewhere. Periscope sources them outside your current file.' },
+          { when: a.BEHAVIOR === 'developing', score: 1, why: 'Shows you where your developing players spend the rest of their gaming wallet.' }
+        ],
+        'Grows the top of the funnel so the gifting program has more people to work on.',
+        a.BEHAVIOR === 'new'),
+
+      build('kiosk', 'ezGIFT\u00ae Kiosk', 'On-property',
+        'A self-serve gifting station on your floor \u2014 more choice in the same footprint, without more staff or more warehouse space.',
+        [
+          { when: a.RAINCHECK === 'rain_yes', score: 6, why: 'Rain checks stop existing when a qualified guest can pick a different gift on the spot.' },
+          { when: a.REDUCE === 'dayof', score: 3, why: 'A day-of earn-and-get needs a redemption point on the floor. This is it.' },
+          { when: a.DEMO === 'older', score: 3, why: 'Your base prefers redeeming in person \u2014 the kiosk widens their choice without sending them online.' },
+          { when: a.GOAL === 'reduce', score: 2, why: 'More gift options in the same footprint, with no added staffing on gift day.' },
+          { when: prog.includes('p_budget'), score: 1 }
+        ],
+        'Expands what a guest can choose from without expanding what you have to warehouse.',
+        key === 'HYBRID'),
+
+      build('store365', '365 by ezGIFT\u00ae', 'Always-on',
+        'A branded storefront where players spend points whenever they want \u2014 gifting becomes a year-round channel instead of a handful of event days.',
+        [
+          { when: prog.includes('p_spend'), score: 7, why: 'You flagged continuous point spend. This is that program, already built.' },
+          { when: prog.includes('p_bank'), score: 4, why: 'Banking points only works if there is a catalog worth banking toward.' },
+          { when: key === 'DIGITAL', score: 4, why: 'Your recommended model runs on a storefront \u2014 365 is how it stays open between gift days.' },
+          { when: a.TIERS === 'vip', score: 2, why: 'High-worth players expect to choose, and to choose on their own schedule.' },
+          { when: a.DEMO === 'younger', score: 2, why: 'A digitally engaged base will use a storefront far more than they will attend a gift day.' },
+          { when: a.VIPUSE === 'vip_yes', score: 1 },
+          { when: a.BUDGET === 'b40', score: 1 }
+        ],
+        'Turns gifting from a few event days into a year-round reinvestment channel.',
+        key === 'DIGITAL')
+    ];
+
+    const live = list.filter(Boolean).sort((x, y) => y.score - x.score);
+    return live.map((p, i) => Object.assign({}, p, {
+      rank: 'Best fit',
+      showRank: i === 0 && live.length > 1 && p.score > 0 ? 'inline-flex' : 'none'
+    }));
+  }
+
+  CASE_FILES = {
+    PHYSICAL: 'strategy/traditional.html',
+    HYBRID: 'strategy/hybrid.html',
+    DIGITAL: 'strategy/digital.html'
+  };
+
+  RANK = { PHYSICAL: 0, HYBRID: 1, DIGITAL: 2 };
+  BY_RANK = ['PHYSICAL', 'HYBRID', 'DIGITAL'];
+
+  // Which steps get asked, given what has been answered so far.
+  sequence() {
+    const a = this.state.answers;
+    const seq = ['GOAL', 'BUDGET', 'VIPUSE'];
+    if (a.VIPUSE === 'vip_yes') seq.push('VIPBUDGET');
+    seq.push('TIERS', 'DEMO');
+    if (a.GOAL === 'reduce') {
+      seq.push('REDUCE');
+      if (a.REDUCE === 'dayof') seq.push('RAINCHECK');
+    } else if (a.GOAL === 'visits') {
+      seq.push('ADDPROG');
+      if (a.ADDPROG === 'open') seq.push('PROGRAMS');
+    } else if (a.GOAL === 'behavior') {
+      seq.push('BEHAVIOR');
+    }
+    return seq;
+  }
+
+  // Longest the flow could still run, so the denominator never counts upward.
+  maxTotal() {
+    const a = this.state.answers;
+    const vip = a.VIPUSE === undefined || a.VIPUSE === 'vip_yes' ? 1 : 0;
+    let branch = 2;
+    if (a.GOAL === 'reduce') branch = a.REDUCE === undefined || a.REDUCE === 'dayof' ? 2 : 1;
+    else if (a.GOAL === 'visits') branch = a.ADDPROG === undefined || a.ADDPROG === 'open' ? 2 : 1;
+    else if (a.GOAL === 'behavior') branch = 1;
+    return 5 + vip + branch;
+  }
+
+  currentStep() {
+    const seq = this.sequence();
+    return seq.find(id => this.state.answers[id] === undefined) || null;
+  }
+
+  optionFor(stepId, key) {
+    const step = stepId === 'PROGRAMS' ? this.PROGRAMS : this.STEPS[stepId];
+    return step.options.find(o => o.key === key);
+  }
+
+  evaluate() {
+    const a = this.state.answers;
+    const seq = this.sequence();
+    let score = 0;
+    let cap = 'DIGITAL';
+    let floor = 'PHYSICAL';
+    const gates = [];
+
+    // Each gate remembers the ceiling it argued for, so a gate that was later
+    // overridden never gets shown next to a recommendation that outranks it.
+    const lowerCap = (model, why) => {
+      if (this.RANK[model] < this.RANK[cap]) { cap = model; if (why) gates.push({ model, text: why }); }
+    };
+    const raiseFloor = (model) => {
+      if (this.RANK[model] > this.RANK[floor]) floor = model;
+    };
+
+    seq.forEach(id => {
+      const val = a[id];
+      if (val === undefined) return;
+      if (id === 'PROGRAMS') {
+        val.forEach(k => {
+          const o = this.optionFor('PROGRAMS', k);
+          score += o.score;
+          if (o.floor) raiseFloor(o.floor);
+        });
+      } else {
+        score += this.optionFor(id, val).score;
+      }
+    });
+
+    // An existing VIP gift track means the property is already running two tracks.
+    if (a.VIPUSE === 'vip_yes') raiseFloor('HYBRID');
+
+    // Hard gates
+    if (a.BUDGET === 'b10' || a.BUDGET === 'b15') {
+      lowerCap('PHYSICAL', 'At this budget, shipping and tax take too large a share of the gift for any home-delivery model to hold its perceived value.');
+    } else if (a.BUDGET === 'b19') {
+      lowerCap('HYBRID', 'A $19\u2013$24 budget supports an elevated gift and a choice layer for a top segment, but not full dropship across the database.');
+    } else if (a.BUDGET === 'b25' && !(a.TIERS === 'vip' && a.DEMO === 'younger')) {
+      lowerCap('HYBRID', 'At $25\u2013$35, full digital only pencils out for a high-worth-only program with a digitally engaged base.');
+    }
+    if (a.DEMO === 'older') {
+      lowerCap('HYBRID', 'A primarily 55+ rural base needs an on-property moment \u2014 address quality and digital friction make an all-digital program a redemption risk.');
+    }
+    if (a.TIERS === 'single' && this.RANK[cap] > 1) {
+      lowerCap('HYBRID', 'Without real tier separation there is no segment to carve out for a differentiated digital track.');
+    }
+    if (a.GOAL === 'visits' && a.ADDPROG === 'closed') {
+      lowerCap('HYBRID', 'With no appetite for structural change, the recommendation stays inside the model you already run.');
+    }
+
+    let key = score <= 0 ? 'PHYSICAL' : (score <= 3 ? 'HYBRID' : 'DIGITAL');
+    if (this.RANK[key] > this.RANK[cap]) key = cap;
+    // Banking and continuous spend outrank the budget gate: accumulating a $15/month
+    // budget into one larger redemption is exactly how a low budget clears the
+    // fulfillment economics it otherwise fails.
+    let reconcile = null;
+    if (this.RANK[floor] > this.RANK[key]) {
+      if (floor === 'HYBRID' && this.RANK[cap] < 1) {
+        reconcile = a.VIPUSE === 'vip_yes'
+          ? 'Your mass budget sits below the usual threshold for home delivery, but you are already running a separate VIP gift \u2014 which means the two-track structure exists whether or not it is named that.'
+          : 'Your budget sits below the usual threshold for home delivery, but banking points toward one larger redemption is precisely what makes that budget work \u2014 so a hybrid structure stays on the table.';
+      }
+      key = floor;
+    }
+
+    // Driver signals, each tagged with the models it actually argues for.
+    // A signal that lost to a gate is either reframed as an override note or dropped.
+    const drivers = [];
+    const prog = Array.isArray(a.PROGRAMS) ? a.PROGRAMS : [];
+
+    if (a.GOAL === 'reduce' && a.REDUCE === 'dayof' && a.RAINCHECK === 'rain_yes') {
+      drivers.push({
+        supports: ['HYBRID', 'DIGITAL'],
+        text: 'Rain checks are the clearest case for a digital fulfillment layer \u2014 every owed guest becomes a code instead of a callback.',
+        override: 'Rain-check exposure would normally point toward a digital fulfillment layer, but the constraints above rule that out \u2014 tighter forecasting and day-of earn are the levers here.'
+      });
+    }
+    if (a.GOAL === 'reduce' && a.REDUCE === 'consolidate') {
+      drivers.push({
+        supports: ['PHYSICAL', 'HYBRID'],
+        text: 'Vendor consolidation and rebates are a sourcing play \u2014 GPS can deliver that inside your current structure without changing the model.'
+      });
+    }
+    if (a.GOAL === 'reduce' && a.REDUCE === 'reseg') {
+      drivers.push({
+        supports: ['PHYSICAL', 'HYBRID'],
+        text: 'Re-segmenting who gets invited protects the gift itself \u2014 the savings come from the list, not from cheapening the moment.'
+      });
+    }
+    if (prog.includes('p_spend')) {
+      drivers.push({
+        supports: ['HYBRID', 'DIGITAL'],
+        text: 'Continuous point spend is an always-on storefront \u2014 that is 365 by ezGIFT\u00ae, not an event-driven gift day.',
+        override: 'Continuous point spend points to an always-on storefront, but the budget and database constraints above keep this program physical for now.'
+      });
+    }
+    if (prog.includes('p_bank') && !prog.includes('p_spend')) {
+      drivers.push({
+        supports: ['HYBRID', 'DIGITAL'],
+        text: 'Banking points requires a redemption catalog behind the program, which pushes you past a purely physical gift day.'
+      });
+    }
+    if (prog.includes('p_vip')) {
+      drivers.push({
+        supports: ['HYBRID', 'DIGITAL'],
+        text: 'Custom VIP experiences need a second track \u2014 they do not run off the same table as the mass gift day.'
+      });
+    }
+    if (a.GOAL === 'behavior' && a.BEHAVIOR === 'inactive') {
+      drivers.push({
+        supports: ['HYBRID', 'DIGITAL'],
+        text: 'Inactive players are not walking in for a gift day \u2014 reaching them means delivering the offer where they already are.',
+        override: 'Inactive players are hard to reach on the floor, so pair this program with a direct offer to pull them back in \u2014 the gift itself stays physical.'
+      });
+    }
+    if (a.GOAL === 'behavior' && a.BEHAVIOR === 'new') {
+      drivers.push({
+        supports: ['PHYSICAL', 'HYBRID'],
+        text: 'New guests are won on the floor \u2014 a branded, in-hand gift is the strongest trip-two driver you have.',
+        override: 'New guests are usually won on the floor, so keep a physical welcome gift alongside the storefront rather than sending them straight to digital.'
+      });
+    }
+    if (a.GOAL === 'behavior' && a.BEHAVIOR === 'developing') {
+      drivers.push({
+        supports: ['HYBRID', 'DIGITAL'],
+        text: 'Developing players respond to a visible next rung \u2014 a differentiated upper tier is what makes playing up feel worth it.'
+      });
+    }
+    if (a.GOAL === 'visits' && a.ADDPROG === 'open') {
+      drivers.push({
+        supports: ['HYBRID', 'DIGITAL'],
+        text: 'You are open to new mechanics, which is what makes a second track worth standing up at all.'
+      });
+    }
+    if (a.VIPUSE === 'vip_yes' && (a.VIPBUDGET === 'v150' || a.VIPBUDGET === 'v75')) {
+      drivers.push({
+        supports: ['HYBRID', 'DIGITAL'],
+        text: 'Your VIP budget is far enough above the mass program that those players should be choosing their own gift, not receiving the same one in a better box.'
+      });
+    }
+    if (a.VIPUSE === 'vip_yes' && a.VIPBUDGET === 'v50') {
+      drivers.push({
+        supports: ['HYBRID'],
+        text: 'You already run a VIP track \u2014 the opportunity is sharpening the gap between it and the mass gift, not building a second program from scratch.'
+      });
+    }
+    if (a.VIPUSE === 'vip_no') {
+      drivers.push({
+        supports: ['PHYSICAL'],
+        text: 'With no VIP gift track today, one well-executed program reaches everyone \u2014 adding a second track is a later conversation.'
+      });
+    }
+    if (a.TIERS === 'multi') {
+      drivers.push({
+        supports: ['HYBRID'],
+        text: 'A distinct high-worth segment is the textbook case for running two tracks under one program.'
+      });
+    }
+    if (a.TIERS === 'vip' && a.DEMO === 'younger') {
+      drivers.push({
+        supports: ['DIGITAL', 'HYBRID'],
+        text: 'A high-worth, digitally engaged base is the profile where full catalog choice outperforms a curated gift.'
+      });
+    }
+    if (a.TIERS === 'single' && a.DEMO === 'older') {
+      drivers.push({
+        supports: ['PHYSICAL'],
+        text: 'One tier and an older, rural base means one well-chosen gift outperforms any amount of choice architecture.'
+      });
+    }
+
+    const agreeing = [];
+    const overrides = [];
+    drivers.forEach(d => {
+      if (d.supports.includes(key)) agreeing.push(d.text);
+      else if (d.override) overrides.push(d.override);
+    });
+
+    // Drop any gate whose ceiling the final recommendation has already cleared.
+    const liveGates = gates.filter(g => this.RANK[g.model] >= this.RANK[key]).map(g => g.text);
+
+    const reasons = [...(reconcile ? [reconcile] : []), ...agreeing, ...liveGates, ...overrides];
+    return { key, score, reasons: reasons.slice(0, 4).map(text => ({ text })) };
+  }
+
+  choose(key) {
+    const stepId = this.currentStep();
+    const answers = Object.assign({}, this.state.answers, { [stepId]: key });
+    this.setState({ answers, order: [...this.state.order, stepId], multiSel: [] }, () => { this.settle(); this.logEvent('answer'); });
+  }
+
+  toggleMulti(key) {
+    const sel = this.state.multiSel.includes(key)
+      ? this.state.multiSel.filter(k => k !== key)
+      : [...this.state.multiSel, key];
+    this.setState({ multiSel: sel });
+  }
+
+  submitMulti() {
+    if (!this.state.multiSel.length) return;
+    const answers = Object.assign({}, this.state.answers, { PROGRAMS: this.state.multiSel });
+    this.setState({ answers, order: [...this.state.order, 'PROGRAMS'], multiSel: [] }, () => { this.settle(); this.logEvent('answer'); });
+  }
+
+  settle() {
+    if (!this.currentStep()) this.setState({ resultKey: this.evaluate().key });
+  }
+
+  back() {
+    const order = [...this.state.order];
+    const last = order.pop();
+    if (!last) return;
+    const answers = Object.assign({}, this.state.answers);
+    delete answers[last];
+    // Drop any answers no longer reachable after undoing this one.
+    this.setState({ answers, order, resultKey: null, multiSel: last === 'PROGRAMS' ? this.state.answers.PROGRAMS || [] : [] }, () => {
+      const valid = this.sequence();
+      const pruned = Object.assign({}, this.state.answers);
+      let changed = false;
+      Object.keys(pruned).forEach(k => { if (!valid.includes(k)) { delete pruned[k]; changed = true; } });
+      if (changed) this.setState({ answers: pruned, order: this.state.order.filter(k => valid.includes(k)) });
+    });
+  }
+
+  restart() {
+    this._session = null;
+    this.setState({ answers: {}, order: [], multiSel: [], resultKey: null, showModule: false,
+      lead: { name: '', email: '', phone: '', casino: '', shows: '', events: [], other: '' },
+      unlocked: false, showErrors: false });
+  }
+
+  openCase() {
+    const file = this.CASE_FILES[this.state.resultKey];
+    if (file) window.location.href = encodeURI(file);
+  }
+
+  labelFor(stepId, val) {
+    if (stepId === 'PROGRAMS') {
+      return val.map(k => this.optionFor('PROGRAMS', k).label).join(' \u00b7 ');
+    }
+    return this.optionFor(stepId, val).label;
+  }
+
+  renderVals() {
+    const accent = this.props.accent ?? '#582c83';
+    const headline = this.props.headline ?? 'Find Your Gifting Model';
+    const intro = this.props.intro ?? "A few questions about your program, your budget, and your database \u2014 and we'll recommend the right structure for your property.";
+    const base = { isQuestion: false, isMulti: false, isResult: false, isModule: false, isGate: false, accent, headline, intro };
+
+    if (this.state.resultKey && this.state.showModule) {
+      const m = this.MODULES[this.state.resultKey];
+      return Object.assign({}, base, {
+        isModule: true, accent: m.accent,
+        modEyebrow: m.eyebrow, modTitle: m.title, modScenario: m.scenario,
+        modSteps: m.steps.map((s, i) => ({ n: i + 1, label: s.label, value: s.value })),
+        modOutcomes: m.outcomes, modInputs: m.inputs,
+        backToResult: () => this.setState({ showModule: false }),
+        restart: () => this.restart()
+      });
+    }
+
+    if (this.state.resultKey && !this.state.unlocked) {
+      const l = this.state.lead;
+      const errs = this.state.showErrors ? this.leadErrors() : {};
+      const field = (name, label, type, autocomplete) => ({
+        name, label, type, autocomplete, value: l[name],
+        onChange: (e) => this.setLead(name, e.target.value),
+        err: errs[name] || '', errDisplay: errs[name] ? 'block' : 'none',
+        border: errs[name] ? '#b3261e' : 'var(--border-strong)'
+      });
+      const askEvents = !!l.shows && l.shows !== 'no';
+      return Object.assign({}, base, {
+        isGate: true,
+        gateFields: [
+          field('name', 'Name', 'text', 'name'),
+          field('email', 'Email', 'email', 'email'),
+          field('phone', 'Phone number (optional)', 'tel', 'tel'),
+          field('casino', 'Casino name', 'text', 'organization')
+        ],
+        showOptions: this.SHOW_ANSWERS.map(o => {
+          const on = l.shows === o.key;
+          return {
+            label: o.label,
+            bg: on ? '#582c83' : '#ffffff', color: on ? '#ffffff' : 'var(--gps-purple-deep)',
+            borderColor: on ? '#582c83' : (errs.shows ? '#b3261e' : '#d9d6e0'),
+            onClick: () => this.setLead('shows', o.key)
+          };
+        }),
+        showsErr: errs.shows || '', showsErrDisplay: errs.shows ? 'block' : 'none',
+        askEvents,
+        eventOptions: this.EVENTS.map(name => {
+          const on = l.events.includes(name);
+          return {
+            label: name,
+            bg: on ? '#f5eefc' : '#faf8fd', borderColor: on ? '#582c83' : '#e7e6eb',
+            boxBg: on ? '#582c83' : '#ffffff', boxBorder: on ? '#582c83' : '#d9d6e0',
+            checkOpacity: on ? '1' : '0',
+            onToggle: () => this.toggleEvent(name)
+          };
+        }),
+        askOther: askEvents && l.events.includes('Other'),
+        otherValue: l.other, onOther: (e) => this.setLead('other', e.target.value),
+        eventsErr: errs.events || '', eventsErrDisplay: errs.events ? 'block' : 'none',
+        submitLead: () => this.submitLead(),
+        back: () => this.back()
+      });
+    }
+
+    if (this.state.resultKey) {
+      const r = this.RESULTS[this.state.resultKey];
+      const ev = this.evaluate();
+      const trail = this.state.order.map((id, i) => ({
+        q: 'Q' + (i + 1),
+        a: this.labelFor(id, this.state.answers[id])
+      }));
+      return Object.assign({}, base, {
+        isResult: true, accent: r.accent,
+        resultTitle: r.title, resultDesc: r.desc, resultCta: r.cta,
+        pillars: r.pillars, reasons: ev.reasons, products: this.products(), trail,
+        openCase: () => this.openCase(),
+        restart: () => this.restart()
+      });
+    }
+
+    const stepId = this.currentStep();
+    const seq = this.sequence();
+    const total = Math.max(seq.length, this.maxTotal());
+    const idx = seq.indexOf(stepId);
+    const pct = Math.round((idx / total) * 100);
+    const progress = {
+      nodeKey: stepId,
+      progressLabel: 'Question ' + (idx + 1) + ' of ' + total,
+      progressPct: pct + '%',
+      progressWidth: pct + '%',
+      hasBack: this.state.order.length > 0,
+      back: () => this.back()
+    };
+
+    if (stepId === 'PROGRAMS') {
+      const sel = this.state.multiSel;
+      return Object.assign({}, base, progress, {
+        isMulti: true,
+        questionText: this.PROGRAMS.q,
+        multiOptions: this.PROGRAMS.options.map(o => {
+          const on = sel.includes(o.key);
+          return {
+            label: o.label, sub: o.sub,
+            bg: on ? '#f5eefc' : '#faf8fd',
+            borderColor: on ? '#582c83' : '#e7e6eb',
+            boxBg: on ? '#582c83' : '#ffffff',
+            boxBorder: on ? '#582c83' : '#d9d6e0',
+            checkOpacity: on ? '1' : '0',
+            onToggle: () => this.toggleMulti(o.key)
+          };
+        }),
+        submitOpacity: sel.length ? '1' : '0.4',
+        submitMulti: () => this.submitMulti()
+      });
+    }
+
+    const step = this.STEPS[stepId];
+    return Object.assign({}, base, progress, {
+      isQuestion: true,
+      questionText: step.q,
+      questionNote: step.note,
+      options: step.options.map((o, i) => ({
+        letter: String.fromCharCode(65 + i),
+        label: o.label,
+        sub: o.sub,
+        onClick: () => this.choose(o.key)
+      }))
+    });
+  }
+}
+</script>
+
+
+</body></html>

@@ -1,0 +1,12 @@
+{
+  "name": "gps-selector-log",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Response + lead log for the GPS Gifting Program Selector. SQLite first, mirrored to Airtable. No dependencies: node:http + node:sqlite.",
+  "main": "src/server.js",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test \"test/*.test.js\""
+  }
+}

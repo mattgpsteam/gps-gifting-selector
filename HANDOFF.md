@@ -1,4 +1,8 @@
-> **Deploy note (repo-specific):** the standalone build's result CTA points at `* Gifting Strategy.dc.html` files that don't exist on this site. After copying a new build to `index.html`, repoint `CASE_FILES` to `strategy/traditional.html`, `strategy/hybrid.html`, `strategy/digital.html` (one sed over the three strings). Last done 2026-09-22.
+> **Repo-specific changes on top of the design build (read before dropping in a new one):**
+> - `index.html` is now built from `source/selector.template.html` with `node tools/build.js`. Edit the source, never `index.html`.
+> - GPS changes in the source: result CTA reads "Case Study" and opens `strategy/*.html`; a lead gate (name, email, phone optional, casino, tradeshows) hides the result until filled in; every answer and the lead are posted to `server/` (selector-log), which stores them in SQLite and mirrors to Airtable. See `server/README.md`.
+> - New design drop: copy it to `index.html`, run `node tools/build.js --extract`, then re-apply the GPS changes (diff against git history of `source/`) and `node tools/build.js`.
+
 
 # Handoff: GPS Gifting Program Selector
 
