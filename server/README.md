@@ -37,7 +37,9 @@ Setup, once:
    separate from the competitive-intel base: this one holds lead PII.
 2. Create a personal access token scoped to **that base only**, with
    `data.records:write`, `schema.bases:read`, `schema.bases:write`.
-3. Build the table (idempotent, safe to re-run):
+3. Easiest: on the server run `sh /opt/gps-selector-log/scripts/set-airtable.sh`. It asks for the base id and token (hidden), builds the table, saves both, and recreates the container. Steps 3-4 below are what it does.
+
+   Build the table (idempotent, safe to re-run):
    `AIRTABLE_PAT=... AIRTABLE_BASE_ID=app... node scripts/airtable-setup-table.js`
 4. Put `AIRTABLE_PAT` and `AIRTABLE_BASE_ID` in the server's `.env.prod`, then
    **recreate** the container (`up -d --force-recreate log`). A running
