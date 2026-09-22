@@ -1,123 +1,191 @@
+> **Deploy note (repo-specific):** the standalone build's result CTA points at `* Gifting Strategy.dc.html` files that don't exist on this site. After copying a new build to `index.html`, repoint `CASE_FILES` to `strategy/traditional.html`, `strategy/hybrid.html`, `strategy/digital.html` (one sed over the three strings). Last done 2026-09-22.
+
 # Handoff: GPS Gifting Program Selector
 
+> **This is an UPDATE to an already-deployed app.** If a GitHub Pages site already exists for this tool, the fastest correct action is: replace `index.html` with the new standalone build and push. Details in **Updating the hosted app** below. Everything else in this README is the spec behind that file.
+
 ## Overview
-An interactive decision-tree tool that guides casino Directors of Marketing through up to six branching questions about their loyalty/gifting program and recommends one of three GPS gifting models: **Traditional Gifting**, **Hybrid Gifting Program**, or **Full Digital Dropship (ezGIFT®)**. It is a lead-qualification and sales-enablement tool — reps demo it on casino floors, and (once hosted) prospects can self-serve it from a GPS web property.
+An interactive decision tool that qualifies casino Directors of Marketing through six to eight questions about their loyalty program and recommends one of three GPS gifting models — **Traditional Gifting**, **Hybrid Gifting Program**, or **Full Digital Dropship (ezGIFT®)** — then surfaces the GPS products that fit that model.
 
-Two deliverables ship together and you can go either route:
-- **Fast path — deploy the standalone file as-is.** `GPS Gifting Program Selector.html` is a single, fully self-contained file (inlined fonts, logo, CSS, and JS). It runs offline with no build step and no dependencies. This is the recommended artifact for GitHub Pages.
-- **Rebuild path — reimplement in a real codebase.** If GPS wants this inside an existing site/app (React/Vue/etc.), recreate the design from this spec using that codebase's patterns.
+It is a sales-enablement and lead-qualification tool. Reps demo it on casino floors (must work offline), and prospects self-serve it from the hosted site.
 
-## About the Design Files
-The HTML files in this bundle are **design references** — a working prototype showing the intended look and behavior. They are production-grade for a static deploy, but if you are integrating into an existing app, treat them as the source of truth for **visual + interaction spec** and reimplement using the target codebase's established framework, components, and patterns rather than pasting the HTML in.
+---
+
+## Updating the hosted app
+
+The entire site is **one self-contained file**. No build step, no framework, no `package.json`, no dependencies. Fonts, logo, CSS, and all logic are inlined — it runs offline from a USB stick.
+
+```
+1. Copy  "GPS Gifting Program Selector.html"  from this bundle
+2. Overwrite  index.html  in the repo root  (Pages serves index.html by default)
+3. git add index.html && git commit -m "Update gifting selector logic" && git push
+4. Pages redeploys in ~1 minute
+```
+
+First-time setup, if Pages is not yet enabled: **Settings → Pages → Build and deployment → Source: Deploy from a branch**, branch `main`, folder `/ (root)`. Site lands at `https://<user-or-org>.github.io/<repo>/`. For a custom domain (e.g. `selector.gpspromo.com`), add a `CNAME` file containing the domain and point DNS per GitHub's docs.
+
+**Do not hand-edit `index.html`.** It is a compiled artifact (~1.1 MB, mostly inlined font binaries). The editable source is `Gifting Program Selector.dc.html`; the standalone is regenerated from it. Hand-edits are lost on the next regeneration.
+
+### Still open before this is a true public lead tool
+- **CTAs do not navigate.** The primary result CTA and "Build This Program" are inert. Wire them to a contact form, `mailto:`, or CRM endpoint.
+- **No lead capture.** Nothing is recorded. Consider a name / property / email step before revealing the result, or after it.
+- **No analytics.** There is no tracking of drop-off by question or of which model gets recommended — both are valuable.
+- **`window.location.href` navigation.** The result CTA navigates to sibling `*.dc.html` case-study files that are NOT part of a Pages deploy of the single file. On the hosted site this link will 404 unless those pages are also deployed or the CTA is repointed.
+
+---
 
 ## Fidelity
-**High-fidelity (hifi).** Final colors, typography, spacing, copy, branching logic, and interactions are all defined here and in the files. Recreate pixel-for-pixel.
+**High-fidelity.** Colors, typography, spacing, copy, routing logic, and interactions are all final. Recreate exactly.
+
+## About the design files
+The HTML here is production-grade for a static deploy. If you are instead integrating into an existing GPS site or app, treat these files as the authoritative **visual + logic spec** and reimplement using that codebase's framework and component patterns.
 
 ---
 
-## Hosting on GitHub Pages (fast path)
+## THE RECOMMENDATION ENGINE — read this first
 
-The standalone file is the entire site. To publish it:
+This is the part that changed most and the part most likely to be reimplemented wrong. **It is not a decision tree.** An earlier version was; it was replaced because the question set has a multi-select and because budget must be able to override intent.
 
-1. Create a new GitHub repo (e.g. `gps-gifting-selector`).
-2. Copy `GPS Gifting Program Selector.html` into the repo root and **rename it to `index.html`** (GitHub Pages serves `index.html` by default).
-3. Commit and push to `main`.
-4. In the repo, go to **Settings → Pages → Build and deployment**, set **Source = Deploy from a branch**, branch = `main`, folder = `/ (root)`, and save.
-5. Wait ~1 minute; the site is live at `https://<user-or-org>.github.io/<repo>/`.
+It is a **two-part model: a score, clamped by gates.**
 
-Notes:
-- No build tooling, framework, or `package.json` is required — it is one static file.
-- To use a custom domain (e.g. `selector.gpspromo.com`), add a `CNAME` file with the domain and configure DNS per GitHub's docs.
-- If you instead want the rebuilt/framework version hosted, build to static output and either push the build to a `gh-pages` branch or use a GitHub Actions Pages workflow.
+### 1. Every answer carries a score
+Negative pulls toward Traditional, positive toward Digital.
 
-If you rebuild in a framework, everything below is the spec.
+| Question | Answer | Score |
+|---|---|---|
+| Q1 Goal | Reduce budgets | −2 |
+| | Drive incremental visits | −1 |
+| | Change player behavior | +1 |
+| Q2 Budget | $10–14 | −3 |
+| | $15–18 | −2 |
+| | $19–24 | −1 |
+| | $25–35 | +1 |
+| | $40+ | +2 |
+| Q3 VIP gifting today | Yes | +1 |
+| | No | −1 |
+| Q4 VIP budget | $50+ / $75+ / $150+ | +1 / +2 / +3 |
+| Q5 Tiers | Single / Multi + VIP / High-worth only | −1 / +1 / +2 |
+| Q6 Demographics | 55+ rural / Mixed / Younger digital | −2 / 0 / +2 |
+| Q7 Reduce lever | Re-segment / Day-of earn / Consolidate vendors | −2 / +1 / −2 |
+| Q8 Rain checks | Yes / No | +2 / −2 |
+| Q7′ Add programs | Yes / No | 0 / −1 |
+| Q8′ Ideas (multi) | Bank points / VIP experiences / Continuous spend / Increase budget | +2 / +1 / +3 / −1 |
+| Q9 Behavior target | VIPs / Inactive / Developing / New guests | +1 / +2 / +1 / −2 |
+
+**Thresholds:** `score ≤ 0` → Traditional · `1–3` → Hybrid · `≥ 4` → Digital.
+
+### 2. Gates clamp the result — a ceiling
+Applied after scoring. Each gate lowers the maximum reachable model and records the reason it did so.
+
+- Budget **$10–18** → ceiling Traditional
+- Budget **$19–24** → ceiling Hybrid
+- Budget **$25–35** → ceiling Hybrid, *unless* tiers = high-worth-only AND demographics = younger
+- Demographics **55+ rural** → ceiling Hybrid (never Digital — address quality and redemption risk)
+- Tiers **single** → ceiling Hybrid (no segment to carve out)
+- **"No" to adding programs** → ceiling Hybrid (stay inside the model they run)
+
+### 3. Floors override the ceiling — deliberately
+Two signals raise a **floor** of Hybrid that **beats the budget gate**:
+
+- **Q3 VIP gifting = Yes** — they already run two tracks, whether or not they call it that.
+- **Q8′ "Bank points" or "Continuous point spend"** — banking is precisely what makes a low budget work ($15/month accumulated is a $180 redemption, which clears fulfillment economics a single $15 gift never could).
+
+This is intentional and was an explicit product decision. A $15-budget property that banks points lands **Hybrid, not Traditional**. When this fires, the result renders a reconciling explanation. The floor never reaches Digital — only Hybrid.
+
+Resolution order in `evaluate()`:
+```
+score → threshold → clamp to ceiling → raise to floor (if higher) → final key
+```
+
+### 4. Rules that make the copy trustworthy
+Two defects were found and fixed here; do not regress them.
+
+- **Driver reasons are tagged** with the models they argue for (`supports: ['HYBRID','DIGITAL']`). A reason is rendered only if it agrees with the final recommendation. A signal that lost to a gate is either **reframed as an explicit override** ("Rain-check exposure would normally point digital, but…") or dropped. Never render a bullet arguing for a model that was not recommended.
+- **Gate reasons are tagged** with the ceiling they set, and are dropped if the final recommendation outranks that ceiling (which happens when a floor overrode it). The reconciling message is hoisted to first position so the 4-bullet cap cannot truncate it.
 
 ---
 
-## Screens / Views
+## Question flow
 
-The tool is a single-page, single-column experience with three view states. Layout is a centered vertical stack: brand header on top, then either the **Question** card or the **Result** card. Max content width **640px**, centered, on a pale-purple radial-wash background.
+Q1–Q3 always ask. Q4 only if Q3 = Yes. Q5–Q6 always. The last one or two come from the Q1 branch:
 
-### Global frame
-- **Container:** `min-height: 100vh`, background `radial-gradient(1100px 520px at 50% -8%, #f0e7fb 0%, #faf8fd 46%, #ffffff 100%)`. Flex column, center-aligned, padding `56px 20px 88px`.
-- **Header (always visible):**
-  - GPS logo (`GPS-logo-main-purple.png`), `height: 38px`, centered, `margin-bottom: 22px`.
-  - Overline: "GIFTING PROGRAM SELECTOR" — Demi 12px, letter-spacing 0.16em, uppercase, color `#582c83`, margin-bottom 14px.
-  - H1 headline: default "Find Your Gifting Model" — Bold, `clamp(34px, 5.5vw, 52px)`, line-height 1.04, letter-spacing -0.015em, color `#2e034a`.
-  - Intro paragraph: Regular 16px/1.6, color `#5a5563` (fg-2), max-width 460px, centered, margin-top 18px. Default: "Answer up to six questions about your program and we'll recommend the right structure for your property."
+```
+Q1 Goal
+Q2 Budget
+Q3 Do you currently utilize VIP gifting?
+  └─ Yes → Q4 VIP budget ($50+ / $75+ / $150+)
+Q5 Tier differentiation
+Q6 Player demographics
+├─ Q1 = Reduce budgets     → Q7  Which lever?  → if "reduce qualified" → Q8 Rain checks?
+├─ Q1 = Drive visits       → Q7′ Add/enhance programs? → if Yes → Q8′ Ideas (MULTI-SELECT)
+└─ Q1 = Change behavior    → Q9  Which players?
+```
 
-### 1. Question view
-Shown while the user is answering. Contains a progress bar + a question card.
+Total 6–8 questions. **The progress denominator shows the longest path still possible**, so it only ever shrinks (8 → 7 → 6) and never counts upward — a deliberate fix, don't "simplify" it back to `sequence().length`.
 
-- **Progress bar** (width 100%, margin-bottom 28px):
-  - Left label "QUESTION N OF 6" — Demi 11px, tracking 0.12em, uppercase, color fg-3 (`#8a8594`).
-  - Right label percent (e.g. "33%") — Demi 11px condensed, color `#582c83`.
-  - Track: height 4px, `background: #ece1f7` (purple-100), radius 999px. Fill: `background: var(--accent)`, width = percent, `transition: width 0.5s`.
-- **Question card:** white, `border: 1px solid #e7e6eb`, radius 14px, padding `40px 40px 36px`, shadow `--sh-3`.
-  - Overline: "QUESTION N OF 6" — Demi 11px, tracking 0.14em, uppercase, color `#bda3e2`.
-  - H2 question text: Bold, `clamp(22px, 3vw, 28px)`/1.2, letter-spacing -0.01em, color `#2e034a`, margin-bottom 26px.
-  - **Option buttons** (2–3 per question): full-width flex row, `gap: 15px`, background `#faf8fd`, `border: 1.5px solid #e7e6eb`, radius 10px, padding `17px 18px`, left-aligned, margin-bottom 10px, cursor pointer.
-    - Leading letter badge (A/B/C): 26×26px circle, `background: #ece1f7`, Bold 12px condensed, color `#582c83`.
-    - Label line: Demi 15px/1.4, color `#2e034a`.
-    - Sub line: Regular 13px/1.5, color fg-2, margin-top 3px.
-    - **Hover:** `border-color: #582c83; background: #f5eefc (purple-50); box-shadow: --sh-2`.
-  - **Back button** (only when history exists): ghost, inline-flex, chevron-left SVG 13px + "BACK" — Demi 12px, tracking 0.1em, uppercase, color fg-3; hover color `#582c83`.
+**Q8′ is the only multi-select.** Checkbox UI, submit button disabled (opacity 0.4, click no-ops) until at least one box is checked. Options in this order: Bank points · VIP experiences · Continuous point spend · Increase gifting budget.
 
-### 2. Result view
-Shown when a leaf (PHYSICAL / HYBRID / DIGITAL) is reached.
-
-- **Result card:** white, `border: 1px solid #e7e6eb`, **`border-top: 4px solid var(--accent)`**, radius 14px, shadow `--sh-4`, overflow hidden. Inner padding `30px 40px 38px`.
-  - Overline: "RECOMMENDED MODEL" — Demi 11px, tracking 0.16em, uppercase, color `var(--accent)`.
-  - H2 title: Bold, `clamp(30px, 5vw, 44px)`/1.06, **uppercase**, letter-spacing 0.005em, color `#2e034a`.
-  - Description paragraph: Regular 16px/1.65, color fg-2, max-width 500px, margin-bottom 30px.
-  - **Pillar grid:** 2×2 grid, `gap: 10px`, margin-bottom 32px. Each cell: `background: #faf8fd`, `border: 1px solid #ece1f7`, radius 10px, padding `15px 16px`. Label: Demi 10px, tracking 0.12em, uppercase, fg-3. Value: Demi 14px/1.4, color `#2e034a`.
-  - **CTA row** (flex, gap 10px, wrap):
-    - Primary: `background: var(--accent)`, white text, Bold 14px, tracking 0.08em, uppercase, padding `14px 24px`, radius 8px, trailing **GPS double-chevron** glyph. Hover `filter: brightness(0.88)`.
-    - Secondary "START OVER": white, `border: 2px solid #d9d6e0`, color fg-2, radius 8px. Hover: border + text `#582c83`.
-- **Answer trail** (below card, margin-top 26px): overline "YOUR ANSWERS", then a vertical list of rows — `Q1` … (Demi 12px condensed, purple, min-width 26px) + the chosen option label (Regular 13px/1.5).
+**Back** pops the last answer and then **prunes any answers no longer reachable** — necessary because changing Q1 or Q3 changes which later questions exist.
 
 ---
 
-## Interactions & Behavior
+## Product recommendations — "Top Options for Your Property"
 
-- **State machine.** A `NODES` map defines every question node (`{ num, q, options[] }`); each option has `{ label, sub, next }` where `next` is either another node id or a result key. A `RESULTS` map defines the three leaves.
-- **Choosing an option:** push `{ nodeId, optionIndex }` onto `history`; if `next` is a result key, set `resultKey` and render the Result view; otherwise advance `currentNodeId`.
-- **Back:** pop the last history entry, return to that node, clear any result.
-- **Start Over / Restart:** reset `history = []`, `currentNodeId = 'Q1'`, `resultKey = null`.
-- **Progress %:** `Math.round(((node.num - 1) / 6) * 100)`.
-- **Accent color changes per result:** Traditional `#582c83`, Hybrid `#7a4fb8`, Digital `#8208d1`. It drives the progress fill, result top border, overline, and primary CTA (exposed as CSS custom property `--accent`).
-- **Transitions:** 200ms `cubic-bezier(0.22, 0.61, 0.36, 1)` on hovers; progress fill 500ms. No entry animation (deliberately removed — content is visible at rest). Calm, no bounce.
+Below the result. Products are **filtered by eligibility first**, then ranked by fit score. Each card shows a "Why" line selected from the highest-priority matching rule, so the copy is specific to what the user answered.
 
-## State Management
-- `history: Array<{ nodeId: string, optionIndex: number }>`
-- `currentNodeId: string` (starts `'Q1'`)
-- `resultKey: 'PHYSICAL' | 'HYBRID' | 'DIGITAL' | null`
+| Product | Eligible when | What it is |
+|---|---|---|
+| **Sonar AI** | Always | AI voice + SMS host reaching players about a gift they've already earned. Two-way conversations, property's own persona, branded caller ID, redemption lift vs. holdout control. See `sonarhost.ai`. **Not** a database-scoring tool. |
+| **ezGIFT® Kiosk** | Result = Hybrid | Self-serve on-floor gifting station — more choice, same footprint, no added staff |
+| **365 by ezGIFT®** | Result = Digital | Always-on branded storefront for continuous point spend |
+| **Periscope** | Q9 = New guests | Finds high-potential players not yet in the database |
 
-No data fetching. The CTA buttons are currently non-navigating — wire them to a contact form, mailto, or CRM endpoint when integrating. Consider adding lead capture (name / property / email) before or after the result if this becomes a public web tool.
+So: Traditional ends with Sonar alone; Hybrid shows Sonar + Kiosk; Digital shows Sonar + 365; Periscope joins any of them when new guests are the target.
 
-## Full branching logic + copy
-The complete node graph, all question/option text, and all result content (titles, descriptions, four pillars each, CTA labels) live verbatim in **`Gifting Program Selector.dc.html`** inside the `NODES` and `RESULTS` objects. That is the authoritative source for copy and routing — read it directly rather than re-transcribing.
+Sonar's fit score rises most on: inactive players, rain checks, a 55+ base (branded caller ID drives answer rates with exactly that demographic), and "drive incremental visits."
 
-## Design Tokens
-From the GPS Design System (`colors_and_type.css`, included in this bundle):
-- **Colors:** primary purple `#582c83` (Pantone 268 C), light purple `#bda3e2` (264 C), bright purple `#8208d1`, deep/near-black purple `#2e034a`, hybrid mid purple `#7a4fb8`. Backgrounds: white, pale wash `#faf8fd`. Borders: subtle `#e7e6eb`, strong `#d9d6e0`, purple-100 `#ece1f7`, purple-50 `#f5eefc`. Text: fg-1 near-black purple, fg-2 `#5a5563`, fg-3 `#8a8594`.
-- **Type:** Avenir Next LT Pro only. Weights used: Regular 400, Demi 600, Bold 700 (700 is the max — never Heavy/Black). A condensed cut is used for stat/number chips.
-- **Radii:** cards 14px, buttons 8px, option rows 10px, pills/badges 999px.
-- **Shadows:** purple-tinted low-contrast elevations `--sh-2`/`--sh-3`/`--sh-4`.
-- **Spacing:** 4px base scale; hero/section padding 40–56px.
-- **Casing:** all-caps display/overlines/buttons never end in a period; tracked-out uppercase.
+A **"Best fit"** badge marks the top-ranked card, suppressed when only one card is eligible.
+
+---
+
+## Screens
+
+Single-column, centered, max width **640px** (720px for the case-study view), on a pale-purple radial wash. Header (logo + overline + H1 + intro) is always visible.
+
+- **Global frame** — `min-height:100vh`, `radial-gradient(1100px 520px at 50% -8%, #f0e7fb 0%, #faf8fd 46%, #ffffff 100%)`, padding `56px 20px 88px`.
+- **Question view** — progress bar (label left, percent right, 4px track `#ece1f7`, fill `var(--accent)`, 500ms width transition) + white card, `1px solid #e7e6eb`, radius 14px, padding `40px 40px 36px`, `--sh-3`. Options are full-width rows: letter badge in a 26px `#ece1f7` circle, Demi 15px label, Regular 13px sub. Hover: `border-color:#582c83; background:#f5eefc; box-shadow:--sh-2`.
+  - **Budget (Q2) and VIP budget (Q4) options have no sub-copy** — labels only, by design.
+- **Multi-select view** — same shell; 26px rounded-square checkboxes that fill `#582c83` with a white check when on; row goes `background:#f5eefc; border-color:#582c83`. Submit button below.
+- **Result view** — white card with `border-top: 4px solid var(--accent)`, overline "RECOMMENDED MODEL", uppercase H2 title, description, 2×2 pillar grid, CTA row (primary in `var(--accent)` with the GPS double-chevron + secondary "START OVER"). Then the product grid, then "YOUR ANSWERS".
+- **Case-study view** — reached from the result CTA: scenario, numbered steps, three input fields for modeling the property, three stat tiles.
+
+**Accent per result:** Traditional `#582c83` · Hybrid `#7a4fb8` · Digital `#8208d1`. Bound as CSS custom property `--accent`, driving progress fill, card top border, overline, and primary CTA.
+
+---
+
+## Design tokens
+From the GPS Design System (`colors_and_type.css`, in this bundle):
+
+- **Colors** — primary `#582c83` (Pantone 268 C), light `#bda3e2` (264 C), bright `#8208d1`, deep `#2e034a`, hybrid mid `#7a4fb8`. Surfaces white and `#faf8fd`. Borders `#e7e6eb` / `#d9d6e0` / `#ece1f7` / `#f5eefc`. Text `#2e034a` / `#5a5563` / `#8a8594`.
+- **Type** — Avenir Next LT Pro only. Regular 400 / Demi 600 / Bold 700. **700 is the maximum — never Heavy or Black.** Condensed cut for numerals and stat chips.
+- **Contrast** — body text ≥ 4.5:1. `#bda3e2` on white is **2.2:1 and fails** — never use it for text, only for borders, rules, and decorative marks. (This was a real bug, caught twice.)
+- **Radii** — cards 14px, buttons 8px, rows 10px, pills 999px.
+- **Motion** — 200ms `cubic-bezier(0.22, 0.61, 0.36, 1)`; progress fill 500ms. No entry animations, no bounce — content is visible at rest.
+- **Casing** — all-caps display, overlines, and buttons; tracked out; never ending in a period.
 
 ## Assets
-- `assets/GPS-logo-main-purple.png` — header logo (also a white version `GPS-logo-main-white.png` for dark surfaces).
-- **GPS double-chevron glyph** — inline SVG `<symbol id="gpsChev">` defined in the DC; the brand forward-CTA mark (never a horizontal arrow). Reuse the path data from the file.
-- **Fonts** — Avenir Next LT Pro. In the standalone file these are inlined; in a rebuild, self-host the family from the GPS design system `fonts/` folder (licensed brand font — do not swap for Inter/Roboto).
-- No third-party icon dependency; the only icons are the inline chevron glyph and a small chevron-left SVG on the Back button.
+- `assets/GPS-logo-main-purple.png` — header logo (white variant included for dark surfaces)
+- **GPS double-chevron** — inline SVG `<symbol id="gpsChev">`; the brand forward-CTA mark. Never substitute a horizontal arrow or single chevron.
+- **Fonts** — Avenir Next LT Pro, inlined in the standalone. In a rebuild, self-host from the design system's `fonts/`. Licensed brand font — do not substitute Inter, Roboto, or a system stack.
+- No icon library. Only the chevron glyph, a back chevron, and a checkmark, all inline SVG.
 
-## Files (in this bundle)
-- `GPS Gifting Program Selector.html` — **standalone, deployable** self-contained build. Rename to `index.html` for GitHub Pages.
-- `Gifting Program Selector.dc.html` — editable source component; authoritative for branching logic, copy, and structure.
-- `support.js` — runtime that renders the component (referenced by the `.dc.html`; already inlined into the standalone file).
-- `colors_and_type.css` — GPS design tokens + `@font-face` rules.
-- `assets/` — GPS logos.
+## Files in this bundle
+| File | Role |
+|---|---|
+| `GPS Gifting Program Selector.html` | **Deployable standalone.** Rename to `index.html`. Compiled — do not hand-edit. |
+| `Gifting Program Selector.dc.html` | **Editable source.** Authoritative for all logic and copy. |
+| `support.js` | Runtime referenced by the source file (already inlined into the standalone) |
+| `colors_and_type.css` | GPS design tokens + `@font-face` rules |
+| `assets/` | GPS logos |
 
-Read `Gifting Program Selector.dc.html` first for the interaction model and copy, then this README for the visual spec and deploy steps.
+**Reading order:** this README's recommendation-engine section → the `evaluate()`, `sequence()`, and `products()` methods in `Gifting Program Selector.dc.html` → the rest of this README for visual spec.
