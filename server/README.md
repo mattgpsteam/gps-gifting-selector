@@ -28,8 +28,10 @@ form whether or not the post has gone through.
 One table, `Responses`. Columns are defined once in `src/fields.js`; the mirror
 and the setup script both read it, so they can't drift.
 
-`Status` is `In progress` (dropped off mid-questions), `Reached form` (saw the
-gate, didn't fill it in) or `Lead submitted`.
+Only two kinds of row reach Airtable: `Lead submitted` (filled in the form) and
+`Sales demo` (a rep's `/sales` run, which has no form). Anonymous drop-offs are
+kept in SQLite only, since a row with no contact details isn't actionable. If a
+drop-off later submits the form, their row goes to Airtable then.
 
 Setup, once:
 

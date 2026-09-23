@@ -30,7 +30,9 @@ const EVENTS = ['IGA', 'G2E', 'Raving/CMTC', 'Casino Connect', 'OIGA', 'WIGA', '
 // Q8' labels, exactly as the page sends them.
 const PROGRAM_IDEAS = ['Adding the ability to bank points', 'Providing custom experiences for VIPs',
   'Allowing players to continuously spend points', 'Increasing gifting budget'];
-const STATUSES = ['In progress', 'Reached form', 'Lead submitted', 'Sales demo'];
+// Only these two reach Airtable (see MIRRORED). Drop-offs stay in SQLite.
+const STATUSES = ['Lead submitted', 'Sales demo'];
+const MIRRORED = new Set(STATUSES);
 
 const dateTime = { dateFormat: { name: 'us' }, timeFormat: { name: '12hour' }, timeZone: 'America/Los_Angeles' };
 const choices = (names) => ({ choices: names.map((name) => ({ name })) });
@@ -97,4 +99,9 @@ function toFields(r) {
   return f;
 }
 
-module.exports = { QUESTIONS, STEP_IDS, RESULTS, TRADESHOW_ANSWERS, EVENTS, SCHEMA, toFields, statusOf };
+/** Whether a row belongs in Airtable: a lead we can contact, or a finished sales demo. */
+function shouldMirror(row) {
+  return MIRRORED.has(statusOf(row));
+}
+
+module.exports = { QUESTIONS, STEP_IDS, RESULTS, TRADESHOW_ANSWERS, EVENTS, SCHEMA, toFields, statusOf, shouldMirror };

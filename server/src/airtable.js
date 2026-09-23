@@ -1,6 +1,6 @@
 'use strict';
 
-const { toFields } = require('./fields');
+const { toFields, shouldMirror } = require('./fields');
 
 /**
  * Mirrors SQLite rows into Airtable, upserting on "Session ID".
@@ -42,8 +42,14 @@ function makeMirror(store, cfg, log = console) {
 
   /** One pass. Returns how many rows it synced. Exposed for tests. */
   async function tick() {
-    const rows = store.pending(BATCH);
-    if (!rows.length) return 0;
+    const pending = store.pending(BATCH);
+    if (!pending.length) return 0;
+    // Anonymous drop-offs are not worth a row in Airtable: mark them done here.
+    // If the same visitor later submits the form, their seq moves past synced_seq
+    // and the row comes back through as a lead.
+    const rows = pending.filter(shouldMirror);
+    for (const r of pending) if (!shouldMirror(r)) store.markSynced(r.sessionId, r.seq);
+    if (!rows.length) return pending.length;
     try {
       await pushBatch(rows);
       for (const r of rows) store.markSynced(r.sessionId, r.seq);
