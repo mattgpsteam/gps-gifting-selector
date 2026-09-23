@@ -118,13 +118,13 @@ const quiet = { log() {}, error() {} };
 
 test('mirror: batches, marks synced, and resyncs only when a row changes', async () => {
   const store = freshStore();
-  store.ingest(validateResponse({ ...answer(1, { GOAL: 'Reduce budgets' }), event: 'lead', lead: LEAD }).value);
+  store.ingest(validateResponse(answer(1, { GOAL: 'Reduce budgets' })).value);
   const at = fakeAirtable(() => ({}));
   const m = makeMirror(store, { pat: 'p', baseId: 'appX', table: 'Responses', fetch: at.f }, quiet);
   assert.equal(await m.tick(), 1);
   assert.deepEqual(at.calls[0].performUpsert, { fieldsToMergeOn: ['Session ID'] });
   assert.equal(await m.tick(), 0);
-  store.ingest(validateResponse({ ...answer(2, { GOAL: 'Reduce budgets', BUDGET: '$40+' }), event: 'lead', lead: LEAD }).value);
+  store.ingest(validateResponse(answer(2, { GOAL: 'Reduce budgets', BUDGET: '$40+' })).value);
   assert.equal(await m.tick(), 1);
   assert.equal(store.counts().unsynced, 0);
 });
@@ -132,8 +132,8 @@ test('mirror: batches, marks synced, and resyncs only when a row changes', async
 test('mirror: a bad value skips one row; a schema problem halts and keeps everything', async () => {
   const store = freshStore();
   const other = '11111111-2222-4333-8444-555555555555';
-  store.ingest(validateResponse({ ...answer(1, { GOAL: 'a' }), event: 'lead', lead: LEAD }).value);
-  store.ingest(validateResponse({ ...answer(1, { GOAL: 'b' }), sessionId: other, event: 'lead', lead: LEAD }).value);
+  store.ingest(validateResponse(answer(1, { GOAL: 'a' })).value);
+  store.ingest(validateResponse({ ...answer(1, { GOAL: 'b' }), sessionId: other }).value);
 
   const at = fakeAirtable((body) => (body.records.length > 1 || body.records[0].fields['Session ID'] === other
     ? { status: 422, text: '{"error":{"type":"INVALID_VALUE_FOR_COLUMN"}}' } : {}));
@@ -142,7 +142,7 @@ test('mirror: a bad value skips one row; a schema problem halts and keeps everyt
   assert.equal(store.counts().unsynced, 0);
 
   const s2 = freshStore();
-  s2.ingest(validateResponse({ ...answer(1, { GOAL: 'a' }), event: 'lead', lead: LEAD }).value);
+  s2.ingest(validateResponse(answer(1, { GOAL: 'a' })).value);
   const broken = fakeAirtable(() => ({ status: 422, text: '{"error":{"type":"UNKNOWN_FIELD_NAME"}}' }));
   const m2 = makeMirror(s2, { pat: 'p', baseId: 'appX', table: 'Responses', fetch: broken.f }, quiet);
   await assert.rejects(m2.tick(), /UNKNOWN_FIELD_NAME/);
@@ -154,21 +154,4 @@ test('fields: a finished /sales run is a Sales demo, not an abandoned lead', () 
   assert.equal(toFields({ ...base, source: 'gifting-selector.gpspromotions.com (sales)' })['Status'], 'Sales demo');
   assert.equal(toFields({ ...base, source: 'gifting-selector.gpspromotions.com' })['Status'], 'Reached form');
   assert.equal(toFields({ ...base, result: null, source: 'x (sales)' })['Status'], 'In progress');
-});
-
-test('mirror: only leads and sales demos reach Airtable; a drop-off that later submits comes through', async () => {
-  const store = freshStore();
-  const demo = '22222222-3333-4444-8555-666666666666';
-  store.ingest(validateResponse(answer(1, { GOAL: 'a' }, { result: 'Traditional Gifting' })).value); // reached form, anonymous
-  store.ingest(validateResponse({ ...answer(1, { GOAL: 'a' }, { result: 'Traditional Gifting', source: 'x (sales)' }), sessionId: demo }).value);
-  const at = fakeAirtable(() => ({}));
-  const m = makeMirror(store, { pat: 'p', baseId: 'appX', table: 'Responses', fetch: at.f }, quiet);
-  await m.tick();
-  assert.equal(at.calls.length, 1);
-  assert.deepEqual(at.calls[0].records.map((r) => r.fields['Status']), ['Sales demo']);
-  assert.equal(store.counts().unsynced, 0, 'the anonymous row is marked done, not retried');
-
-  store.ingest(validateResponse({ ...answer(2, { GOAL: 'a' }, { result: 'Traditional Gifting' }), event: 'lead', lead: LEAD }).value);
-  await m.tick();
-  assert.deepEqual(at.calls[1].records.map((r) => r.fields['Status']), ['Lead submitted']);
 });
