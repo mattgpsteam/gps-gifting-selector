@@ -31,7 +31,9 @@ and the setup script both read it, so they can't drift.
 Every visitor gets a row, named or not, so answers can be reviewed even when we
 don't know who gave them. `Status` is `In progress` (dropped off mid-questions),
 `Reached form` (saw the gate, didn't fill it in), `Lead submitted`, or
-`Sales demo` (a rep's `/sales` run, which has no form). Filter a view on
+`Sales demo` (a rep's `/sales` run, which has no form), or `Website embed`
+(finished inside the `/embed` frame on gpspromotions.com, whose own form takes
+the lead and can carry the Session ID to join on). Filter a view on
 Status for just the leads.
 
 Setup, once:

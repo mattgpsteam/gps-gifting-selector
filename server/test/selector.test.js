@@ -155,3 +155,9 @@ test('fields: a finished /sales run is a Sales demo, not an abandoned lead', () 
   assert.equal(toFields({ ...base, source: 'gifting-selector.gpspromotions.com' })['Status'], 'Reached form');
   assert.equal(toFields({ ...base, result: null, source: 'x (sales)' })['Status'], 'In progress');
 });
+
+test('fields: a finished /embed run is a Website embed, not an abandoned lead', () => {
+  const base = { sessionId: SID, seq: 3, startedAt: T0, at: T0, order: ['GOAL'], answers: { GOAL: 'x' }, lead: null, result: 'Full Digital Dropship' };
+  assert.equal(toFields({ ...base, source: 'gifting-selector.gpspromotions.com (embed)' })['Status'], 'Website embed');
+  assert.equal(toFields({ ...base, result: null, source: 'x (embed)' })['Status'], 'In progress');
+});

@@ -575,6 +575,44 @@ class Component extends DCLogic {
     return /\/sales(\/|\/index\.html)?$/.test(location.pathname);
   }
 
+  // /embed is the same page framed on gpspromotions.com, which collects leads with
+  // its own form: no lead gate here. The page reports its height to the parent so
+  // the frame can size itself, and hands over the result so the site's form can
+  // carry the selector session along (see embed/README.md).
+  isEmbed() {
+    return /\/embed(\/|\/index\.html)?$/.test(location.pathname);
+  }
+
+  // Only GPS's own site gets told the visitor's answers.
+  EMBED_PARENTS = ['https://gpspromotions.com', 'https://www.gpspromotions.com'];
+
+  postToParent(msg) {
+    if (!this.isEmbed() || window.parent === window) return;
+    // ancestorOrigins survives a parent that strips the referrer (no Firefox support).
+    let origin = '';
+    try { origin = location.ancestorOrigins && location.ancestorOrigins[0] || new URL(document.referrer).origin; } catch (e) {}
+    try {
+      // Testing hook, like gps-selector-log-url: trust one extra parent origin.
+      let extra = null;
+      try { extra = localStorage.getItem('gps-selector-embed-parent'); } catch (e) {}
+      if (this.EMBED_PARENTS.includes(origin) || (extra && extra === origin)) window.parent.postMessage(msg, origin);
+      // Layout messages carry no answers, so any test page can size the frame.
+      else if (msg.type === 'gps-selector:height' || msg.type === 'gps-selector:step') window.parent.postMessage(msg, '*');
+    } catch (e) {}
+  }
+
+  reportHeight() {
+    // The body's own box, not documentElement.scrollHeight: that never drops below
+    // the frame's current height, so the frame could grow but never shrink.
+    const b = document.body;
+    const cs = getComputedStyle(b);
+    const h = Math.ceil(b.getBoundingClientRect().height + parseFloat(cs.marginTop) + parseFloat(cs.marginBottom));
+    if (h && h !== this._lastHeight) {
+      this._lastHeight = h;
+      this.postToParent({ type: 'gps-selector:height', height: h });
+    }
+  }
+
   logUrl() {
     // Testing hook: point a browser at a local server without rebuilding.
     try { return localStorage.getItem('gps-selector-log-url') || this.LOG_URL; } catch (e) { return this.LOG_URL; }
@@ -593,7 +631,7 @@ class Component extends DCLogic {
   componentDidMount() {
     // The bundle swaps in this page's own <head> at runtime, dropping the noindex
     // tag the build puts on sales/index.html, so restate it here.
-    if (this.isSales() && !document.querySelector('meta[name="robots"]')) {
+    if ((this.isSales() || this.isEmbed()) && !document.querySelector('meta[name="robots"]')) {
       const m = document.createElement('meta');
       m.name = 'robots';
       m.content = 'noindex, nofollow';
@@ -603,11 +641,42 @@ class Component extends DCLogic {
     this._onOnline = () => this.flushOutbox();
     window.addEventListener('online', this._onOnline);
     this._flushTimer = setInterval(() => this.flushOutbox(), 30000);
+    if (this.isEmbed()) {
+      document.documentElement.style.overflow = 'hidden'; // the frame grows instead
+      // The page fills the viewport with min-height: 100vh. In a frame sized to
+      // its content, that feeds back (taller frame -> taller page) and the frame
+      // could never shrink, so size to content instead.
+      const css = document.createElement('style');
+      css.textContent = '[style*="min-height: 100vh"] { min-height: 0 !important; }';
+      document.head.appendChild(css);
+      if (window.ResizeObserver) {
+        this._resizeObs = new ResizeObserver(() => this.reportHeight());
+        this._resizeObs.observe(document.body);
+      }
+      this._onLoad = () => this.reportHeight();
+      window.addEventListener('load', this._onLoad);
+      this.postToParent({ type: 'gps-selector:ready', sessionId: this.session().id });
+      this.reportHeight();
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (!this.isEmbed()) return;
+    this.reportHeight();
+    // A new screen starts at the top of the frame, which may be scrolled out of
+    // the parent's view: tell the parent so it can bring the frame back up.
+    const st = this.state;
+    if (st.order.length !== prevState.order.length || st.resultKey !== prevState.resultKey
+      || st.showModule !== prevState.showModule) {
+      this.postToParent({ type: 'gps-selector:step', height: this._lastHeight || 0 });
+    }
   }
 
   componentWillUnmount() {
     window.removeEventListener('online', this._onOnline);
     clearInterval(this._flushTimer);
+    if (this._resizeObs) this._resizeObs.disconnect();
+    if (this._onLoad) window.removeEventListener('load', this._onLoad);
   }
 
   newId() {
@@ -648,9 +717,13 @@ class Component extends DCLogic {
       sessionId: s.id, seq: s.seq, event, startedAt: s.startedAt, at: new Date().toISOString(),
       order: st.order, answers,
       result: ev ? this.RESULTS[ev.key].title : null, score: ev ? ev.score : null,
-      source: (location.protocol === 'file:' ? 'offline-file' : location.host) + (this.isSales() ? ' (sales)' : ''),
+      source: (location.protocol === 'file:' ? 'offline-file' : location.host) + (this.isSales() ? ' (sales)' : this.isEmbed() ? ' (embed)' : ''),
       referrer: document.referrer || '', userAgent: navigator.userAgent
     };
+    if (ev) {
+      this.postToParent({ type: 'gps-selector:result', sessionId: s.id, result: payload.result,
+        score: payload.score, answers });
+    }
     if (event === 'lead') {
       const l = st.lead;
       payload.lead = {
@@ -1297,8 +1370,13 @@ class Component extends DCLogic {
 
   openCase() {
     const file = this.CASE_FILES[this.state.resultKey];
-    // Briefs live at the site root; /sales/ is one folder down.
-    if (file) window.location.href = encodeURI((this.isSales() ? '../' : '') + file);
+    // Briefs live at the site root; /sales/ and /embed/ are one folder down.
+    if (!file) return;
+    const url = encodeURI((this.isSales() || this.isEmbed() ? '../' : '') + file);
+    // Inside a frame on gpspromotions.com, open the brief in a new tab instead of
+    // swapping it into the frame.
+    if (this.isEmbed()) window.open(url, '_blank', 'noopener');
+    else window.location.href = url;
   }
 
   labelFor(stepId, val) {
@@ -1326,7 +1404,7 @@ class Component extends DCLogic {
       });
     }
 
-    if (this.state.resultKey && !this.state.unlocked && !this.isSales()) {
+    if (this.state.resultKey && !this.state.unlocked && !this.isSales() && !this.isEmbed()) {
       const l = this.state.lead;
       const errs = this.state.showErrors ? this.leadErrors() : {};
       const field = (name, label, type, autocomplete) => ({

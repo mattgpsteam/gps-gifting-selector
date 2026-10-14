@@ -35,12 +35,13 @@ if (process.argv.includes('--extract')) {
   fs.writeFileSync(indexFile, built);
   console.log('built index.html from', path.relative(root, srcFile));
 
-  // /sales/ is the same page; the page itself skips the lead gate on that path.
-  // noindex keeps the gate-free copy out of search results.
-  const salesDir = path.join(root, 'sales');
-  fs.mkdirSync(salesDir, { recursive: true });
-  const sales = built.replace(/<head>/i, '<head>\n  <meta name="robots" content="noindex, nofollow">');
-  if (sales === built) throw new Error('no <head> in index.html to mark noindex');
-  fs.writeFileSync(path.join(salesDir, 'index.html'), sales);
-  console.log('built sales/index.html');
+  // /sales/ and /embed/ are the same page; the page itself skips the lead gate on
+  // those paths. noindex keeps the gate-free copies out of search results.
+  const noindex = built.replace(/<head>/i, '<head>\n  <meta name="robots" content="noindex, nofollow">');
+  if (noindex === built) throw new Error('no <head> in index.html to mark noindex');
+  for (const dir of ['sales', 'embed']) {
+    fs.mkdirSync(path.join(root, dir), { recursive: true });
+    fs.writeFileSync(path.join(root, dir, 'index.html'), noindex);
+    console.log(`built ${dir}/index.html`);
+  }
 }
