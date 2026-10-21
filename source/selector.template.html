@@ -757,6 +757,25 @@ class Component extends DCLogic {
     window.addEventListener('online', this._onOnline);
     this._flushTimer = setInterval(() => this.flushOutbox(), 30000);
     if (this.isEmbed()) {
+      // HubSpot's embed trips the browser's benign "ResizeObserver loop" warning
+      // when its form is rebuilt (Back, then forward to the gate again). The
+      // bundle prints every window error in a red on-page panel; its listener is
+      // registered first, so this one runs after it and takes back just that line.
+      this._onErr = (e) => {
+        if (!/ResizeObserver loop/.test(e.message || '')) return;
+        const panel = document.getElementById('__bundler_err');
+        if (!panel) return;
+        const NL = String.fromCharCode(10); // the panel's own line separator
+        const rest = panel.textContent.split(NL).filter(l => l && !/ResizeObserver loop/.test(l));
+        if (rest.length) panel.textContent = rest.join(NL);
+        else panel.remove();
+      };
+      window.addEventListener('error', this._onErr, true);
+    }
+    // Frame sizing only applies inside a frame. Opened directly, /embed is an
+    // ordinary page: hiding its scrollbar there left it unscrollable and set off
+    // a ResizeObserver loop once the HubSpot form loaded.
+    if (this.isEmbed() && window.parent !== window) {
       document.documentElement.style.overflow = 'hidden'; // the frame grows instead
       // The page fills the viewport with min-height: 100vh. In a frame sized to
       // its content, that feeds back (taller frame -> taller page) and the frame
@@ -764,12 +783,11 @@ class Component extends DCLogic {
       const css = document.createElement('style');
       css.textContent = '[style*="min-height: 100vh"] { min-height: 0 !important; }';
       document.head.appendChild(css);
-      if (window.ResizeObserver) {
-        // Deferred a frame: reporting inside the callback trips the browser's
-        // "ResizeObserver loop" error, which the bundle shows as an on-page banner.
-        this._resizeObs = new ResizeObserver(() => requestAnimationFrame(() => this.reportHeight()));
-        this._resizeObs.observe(document.body);
-      }
+      // Polled, not a ResizeObserver on <body>: HubSpot's embed resizes its form
+      // from inside its own (deeper) ResizeObserver, which leaves a body observer
+      // with an undeliverable notification. The browser reports that as a
+      // "ResizeObserver loop" error and the bundle prints it on the page.
+      this._heightTimer = setInterval(() => this.reportHeight(), 250);
       this._onLoad = () => this.reportHeight();
       window.addEventListener('load', this._onLoad);
       this.postToParent({ type: 'gps-selector:ready', sessionId: this.session().id });
@@ -793,7 +811,8 @@ class Component extends DCLogic {
   componentWillUnmount() {
     window.removeEventListener('online', this._onOnline);
     clearInterval(this._flushTimer);
-    if (this._resizeObs) this._resizeObs.disconnect();
+    clearInterval(this._heightTimer);
+    if (this._onErr) window.removeEventListener('error', this._onErr, true);
     if (this._onLoad) window.removeEventListener('load', this._onLoad);
     if (this._onHsMessage) window.removeEventListener('message', this._onHsMessage);
   }
