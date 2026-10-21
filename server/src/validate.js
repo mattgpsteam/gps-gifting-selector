@@ -54,7 +54,8 @@ function validateResponse(r) {
     };
     if (!lead.name || !lead.casino) return { error: 'lead needs name and casino' };
     if (!EMAIL.test(lead.email)) return { error: 'lead email invalid' };
-    if (!TRADESHOW_ANSWERS.includes(lead.tradeshows)) return { error: 'lead tradeshows answer invalid' };
+    // Blank is allowed: the /embed page's HubSpot form makes the tradeshow question optional.
+    if (lead.tradeshows && !TRADESHOW_ANSWERS.includes(lead.tradeshows)) return { error: 'lead tradeshows answer invalid' };
     if (lead.tradeshows === 'No') { lead.events = []; lead.otherEvent = ''; }
     value.lead = lead;
   }

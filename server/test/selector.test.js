@@ -156,8 +156,9 @@ test('fields: a finished /sales run is a Sales demo, not an abandoned lead', () 
   assert.equal(toFields({ ...base, result: null, source: 'x (sales)' })['Status'], 'In progress');
 });
 
-test('fields: a finished /embed run is a Website embed, not an abandoned lead', () => {
-  const base = { sessionId: SID, seq: 3, startedAt: T0, at: T0, order: ['GOAL'], answers: { GOAL: 'x' }, lead: null, result: 'Full Digital Dropship' };
-  assert.equal(toFields({ ...base, source: 'gifting-selector.gpspromotions.com (embed)' })['Status'], 'Website embed');
-  assert.equal(toFields({ ...base, result: null, source: 'x (embed)' })['Status'], 'In progress');
+test('validate: a HubSpot-gated /embed lead may leave tradeshows blank', () => {
+  const r = { sessionId: SID, seq: 9, event: 'lead', startedAt: T0, at: T0, order: [], answers: {},
+    lead: { name: 'Pat Doe', email: 'pat@casino.com', casino: 'Riverwind', tradeshows: '', events: [] } };
+  assert.ok(validateResponse(r).value);
+  assert.equal(validateResponse({ ...r, lead: { ...r.lead, tradeshows: 'Maybe' } }).error, 'lead tradeshows answer invalid');
 });

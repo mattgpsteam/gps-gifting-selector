@@ -429,6 +429,32 @@ code, pre { font-family: var(--font-mono); font-size: 0.92em; }
     </div>
   </sc-if>
 
+  <sc-if value="{{ isHsGate }}" hint-placeholder-val="{{ false }}">
+    <div style="--accent: {{ accent }}; width: 100%; max-width: 640px; display: flex; flex-direction: column; align-items: center;">
+
+      <div style="width: 100%; margin-bottom: 28px;">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 9px;">
+          <span style="font: var(--w-demi) 11px/1.2 var(--font-sans); letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-3);">Last Step</span>
+          <span style="font: var(--w-demi) 11px/1.2 var(--font-condensed); letter-spacing: 0.04em; color: var(--gps-purple);">100%</span>
+        </div>
+        <div style="height: 4px; background: var(--purple-100); border-radius: 999px; overflow: hidden;">
+          <div style="height: 100%; width: 100%; background: var(--accent); border-radius: 999px; transition: width 0.5s var(--ease-out);"></div>
+        </div>
+      </div>
+
+      <div style="width: 100%; background: #ffffff; border: 1px solid var(--border-subtle); border-radius: 14px; padding: 32px 32px 28px; box-shadow: var(--sh-3);">
+        <div id="gps-hs-form" style="min-height: 420px;"></div>
+        <p style="display: {{ hsErrDisplay }}; font: var(--w-regular) 14px/1.55 var(--font-sans); color: #b3261e; margin: 0;">The form didn't load. Check your connection and reload the page.</p>
+      </div>
+
+      <button sc-camel-on-click="{{ back }}" style="display: inline-flex; align-items: center; gap: 7px; margin-top: 22px; background: none; border: none; color: var(--fg-3); font: var(--w-demi) 12px/1 var(--font-sans); letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: color var(--dur-base) var(--ease-out);" style-hover="color: var(--gps-purple);">
+        <svg sc-camel-view-box="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" style="width: 13px; height: 13px;"><path d="M10 12L6 8l4-4"></path></svg>
+        Back
+      </button>
+
+    </div>
+  </sc-if>
+
   <sc-if value="{{ isResult }}" hint-placeholder-val="{{ false }}">
     <div style="--accent: {{ accent }}; width: 100%; max-width: 640px; display: flex; flex-direction: column; align-items: center;">
 
@@ -575,12 +601,101 @@ class Component extends DCLogic {
     return /\/sales(\/|\/index\.html)?$/.test(location.pathname);
   }
 
-  // /embed is the same page framed on gpspromotions.com, which collects leads with
-  // its own form: no lead gate here. The page reports its height to the parent so
-  // the frame can size itself, and hands over the result so the site's form can
-  // carry the selector session along (see embed/README.md).
+  // /embed is the same page framed on gpspromotions.com. Its lead gate is GPS's
+  // HubSpot form instead of ours, so the lead lands in HubSpot; the submission is
+  // still logged here so Airtable ties the person to their answers. The page
+  // reports its height to the parent so the frame can size itself (see
+  // embed/README.md).
   isEmbed() {
     return /\/embed(\/|\/index\.html)?$/.test(location.pathname);
+  }
+
+  HS_FORM = { region: 'na2', portalId: '42297193', formId: '24a5f996-e733-4ec7-9fb8-911b630108c9' };
+
+  // HubSpot's tradeshow checkbox values -> our SHOW_ANSWERS keys.
+  HS_SHOWS = {
+    'Yes, I attend industry tradeshow(s)': 'yes',
+    'No, I do not attend industry tradeshow(s)': 'no',
+    'Only executives typically attend tradeshow(s) at my org.': 'exec'
+  };
+
+  // Called whenever the HubSpot gate is on screen. The form is created once per
+  // visit to the gate; Back and forth re-creates it in the fresh container.
+  mountHubSpot() {
+    const el = document.getElementById('gps-hs-form');
+    if (!el || el.childElementCount || this._hsLoading) return;
+    if (!this._onHsMessage) {
+      this._onHsMessage = (e) => this.onHubSpotMessage(e);
+      window.addEventListener('message', this._onHsMessage);
+    }
+    const create = () => {
+      this._hsLoading = false;
+      const target = document.getElementById('gps-hs-form');
+      if (!target || target.childElementCount) return;
+      window.hbspt.forms.create({
+        region: this.HS_FORM.region, portalId: this.HS_FORM.portalId, formId: this.HS_FORM.formId,
+        target: '#gps-hs-form'
+      });
+    };
+    if (window.hbspt && window.hbspt.forms) return create();
+    this._hsLoading = true;
+    const s = document.createElement('script');
+    s.src = 'https://js-na2.hsforms.net/forms/embed/v2.js';
+    s.async = true;
+    s.onload = create;
+    s.onerror = () => { this._hsLoading = false; this.setState({ hsFailed: true }); };
+    document.head.appendChild(s);
+  }
+
+  // HubSpot's embed announces its lifecycle with window messages. Only a submit of
+  // our own form unlocks the result.
+  onHubSpotMessage(e) {
+    const d = e.data;
+    if (!d || d.type !== 'hsFormCallback' || d.id !== this.HS_FORM.formId) return;
+    if (d.eventName === 'onFormReady') { this.fillHubSpotHidden(); return; }
+    if (d.eventName !== 'onFormSubmitted' || this.state.unlocked || !this.state.resultKey) return;
+    // Older embeds send [{ name, value }], newer ones { submissionValues }.
+    const v = {};
+    if (Array.isArray(d.data)) d.data.forEach(f => {
+      v[f.name] = v[f.name] ? v[f.name] + ';' + f.value : f.value;
+    });
+    else Object.assign(v, (d.data && d.data.submissionValues) || {});
+    const one = (k) => String(v[k] == null ? '' : v[k]).split(';')[0].trim();
+    const lead = {
+      name: [one('firstname'), one('lastname')].filter(Boolean).join(' '),
+      email: one('email'), phone: one('phone'), casino: one('company'),
+      shows: this.HS_SHOWS[one('attend_tradeshows')] || '', events: [], other: ''
+    };
+    this.setState({ lead }, () => {
+      this.logEvent('lead');
+      this.setState({ unlocked: true });
+      const ev = this.evaluate();
+      this.postToParent({ type: 'gps-selector:result', sessionId: this.session().id,
+        result: this.RESULTS[ev.key].title, score: ev.score });
+    });
+  }
+
+  // If the form ever gets hidden fields with these names, HubSpot will carry the
+  // recommendation and the session id (the Airtable join key) on the contact.
+  fillHubSpotHidden() {
+    const ev = this.state.resultKey ? this.evaluate() : null;
+    const values = {
+      gifting_selector_result: ev ? this.RESULTS[ev.key].title : '',
+      gifting_selector_session: this.session().id
+    };
+    const host = document.getElementById('gps-hs-form');
+    if (!host) return;
+    const frame = host.querySelector('iframe');
+    let root = host;
+    try { if (frame && frame.contentDocument) root = frame.contentDocument; } catch (e) {}
+    Object.keys(values).forEach(name => {
+      const input = root.querySelector('input[name="' + name + '"]');
+      if (input) {
+        input.value = values[name];
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    });
   }
 
   // Only GPS's own site gets told the visitor's answers.
@@ -650,7 +765,9 @@ class Component extends DCLogic {
       css.textContent = '[style*="min-height: 100vh"] { min-height: 0 !important; }';
       document.head.appendChild(css);
       if (window.ResizeObserver) {
-        this._resizeObs = new ResizeObserver(() => this.reportHeight());
+        // Deferred a frame: reporting inside the callback trips the browser's
+        // "ResizeObserver loop" error, which the bundle shows as an on-page banner.
+        this._resizeObs = new ResizeObserver(() => requestAnimationFrame(() => this.reportHeight()));
         this._resizeObs.observe(document.body);
       }
       this._onLoad = () => this.reportHeight();
@@ -662,6 +779,7 @@ class Component extends DCLogic {
 
   componentDidUpdate(prevProps, prevState) {
     if (!this.isEmbed()) return;
+    if (this.state.resultKey && !this.state.unlocked && !this.state.showModule) this.mountHubSpot();
     this.reportHeight();
     // A new screen starts at the top of the frame, which may be scrolled out of
     // the parent's view: tell the parent so it can bring the frame back up.
@@ -677,6 +795,7 @@ class Component extends DCLogic {
     clearInterval(this._flushTimer);
     if (this._resizeObs) this._resizeObs.disconnect();
     if (this._onLoad) window.removeEventListener('load', this._onLoad);
+    if (this._onHsMessage) window.removeEventListener('message', this._onHsMessage);
   }
 
   newId() {
@@ -720,10 +839,6 @@ class Component extends DCLogic {
       source: (location.protocol === 'file:' ? 'offline-file' : location.host) + (this.isSales() ? ' (sales)' : this.isEmbed() ? ' (embed)' : ''),
       referrer: document.referrer || '', userAgent: navigator.userAgent
     };
-    if (ev) {
-      this.postToParent({ type: 'gps-selector:result', sessionId: s.id, result: payload.result,
-        score: payload.score, answers });
-    }
     if (event === 'lead') {
       const l = st.lead;
       payload.lead = {
@@ -1390,7 +1505,7 @@ class Component extends DCLogic {
     const accent = this.props.accent ?? '#582c83';
     const headline = this.props.headline ?? 'Find Your Gifting Model';
     const intro = this.props.intro ?? "A few questions about your program, your budget, and your database \u2014 and we'll recommend the right structure for your property.";
-    const base = { isQuestion: false, isMulti: false, isResult: false, isModule: false, isGate: false, accent, headline, intro };
+    const base = { isQuestion: false, isMulti: false, isResult: false, isModule: false, isGate: false, isHsGate: false, accent, headline, intro };
 
     if (this.state.resultKey && this.state.showModule) {
       const m = this.MODULES[this.state.resultKey];
@@ -1404,7 +1519,15 @@ class Component extends DCLogic {
       });
     }
 
-    if (this.state.resultKey && !this.state.unlocked && !this.isSales() && !this.isEmbed()) {
+    if (this.state.resultKey && !this.state.unlocked && this.isEmbed()) {
+      return Object.assign({}, base, {
+        isHsGate: true,
+        hsErrDisplay: this.state.hsFailed ? 'block' : 'none',
+        back: () => this.back()
+      });
+    }
+
+    if (this.state.resultKey && !this.state.unlocked && !this.isSales()) {
       const l = this.state.lead;
       const errs = this.state.showErrors ? this.leadErrors() : {};
       const field = (name, label, type, autocomplete) => ({

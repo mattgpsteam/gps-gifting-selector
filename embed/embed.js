@@ -5,11 +5,9 @@
  *   <script src="https://gifting-selector.gpspromotions.com/embed/embed.js" async></script>
  *
  * Each [data-gps-selector] element gets a frame of /embed/ that sizes itself to
- * the page inside it. When the visitor reaches a recommendation, the element
- * fires a "gps-selector:result" DOM event (bubbles) whose detail is
- * { sessionId, result, score, answers }, and any field inside the page marked
- * data-gps-selector-field="sessionId|result|score" is filled in, so the site's
- * own form can carry it.
+ * the page inside it. The frame gates the result behind GPS's HubSpot form; once
+ * it is submitted, the element fires a "gps-selector:result" DOM event (bubbles)
+ * whose detail is { sessionId, result, score }, for analytics or a conversion tag.
  */
 (function () {
   'use strict';
@@ -30,17 +28,6 @@
     frames.push({ el: el, frame: f });
   }
 
-  function fill(detail) {
-    ['sessionId', 'result', 'score'].forEach(function (k) {
-      var v = detail[k] == null ? '' : String(detail[k]);
-      document.querySelectorAll('[data-gps-selector-field="' + k + '"]').forEach(function (input) {
-        input.value = v;
-        input.dispatchEvent(new Event('input', { bubbles: true }));
-        input.dispatchEvent(new Event('change', { bubbles: true }));
-      });
-    });
-  }
-
   window.addEventListener('message', function (e) {
     if (e.origin !== origin || !e.data || typeof e.data.type !== 'string') return;
     var hit = null;
@@ -54,8 +41,7 @@
       var top = hit.frame.getBoundingClientRect().top;
       if (top < 0) window.scrollBy({ top: top - 16, behavior: 'smooth' });
     } else if (d.type === 'gps-selector:result') {
-      var detail = { sessionId: d.sessionId, result: d.result, score: d.score, answers: d.answers || {} };
-      fill(detail);
+      var detail = { sessionId: d.sessionId, result: d.result, score: d.score };
       hit.el.dispatchEvent(new CustomEvent('gps-selector:result', { bubbles: true, detail: detail }));
     }
   });

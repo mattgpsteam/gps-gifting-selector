@@ -1,19 +1,26 @@
 # Embedding the selector on gpspromotions.com
 
-`/embed/` is the selector built for a frame on GPS's own site. It differs from
-the main page in four ways:
+`/embed/` is the selector built for a frame on GPS's own site. It works like the
+main page, with these differences:
 
-- **No lead gate.** The site collects leads with its own form.
+- **The lead gate is GPS's HubSpot form** (portal 42297193, form
+  `24a5f996-e733-4ec7-9fb8-911b630108c9`, region na2), not our own form. The
+  result stays hidden until HubSpot confirms the submission. The lead lands in
+  HubSpot along with its workflows, owner notification and consent records.
+- **The submission is still logged here.** Name, email, phone, company and the
+  tradeshow answer go to selector-log, and from there to Airtable. That puts the
+  person in the same row as their answers. Job title and interests live only in
+  HubSpot.
 - **It sizes itself.** The page tells the parent page its height on every
-  screen, so the frame never scrolls inside itself.
-- **It hands over the result.** On gpspromotions.com (and www.) only, the
-  frame passes the recommendation and the selector's Session ID to the parent
-  page, so the site's form can send them along with the lead.
-- **Its rows are tagged.** Source ends in ` (embed)`, and a finished run gets
-  Status `Website embed` in Airtable instead of `Reached form`.
+  screen, including after the HubSpot form loads. The frame never scrolls inside
+  itself.
+- **Its rows are tagged.** Source ends in ` (embed)`. Status works the same as on
+  the main page: `Reached form` means the visitor saw the HubSpot form but didn't
+  submit it.
 
 `embed/index.html` is built by `node tools/build.js`, like `sales/`. Never edit
-it by hand.
+it by hand. To switch to a different HubSpot form, change `HS_FORM` in
+`source/selector.template.html` and rebuild.
 
 ## Paste this on the page
 
@@ -25,38 +32,32 @@ it by hand.
 Optional attributes on the div: `data-min-height="640"` (the height before the
 page reports in) and `data-title` (the frame's accessible name).
 
-## Hooking up the site's form
+## Optional: the recommendation on the HubSpot contact
 
-Either of these works. You can use both.
+Add two single-line-text contact properties in HubSpot,
+`gifting_selector_result` and `gifting_selector_session`. Then add both to the
+form as **hidden** fields. The selector fills them in automatically, so every
+contact shows which model they were recommended, plus the Session ID to look up
+their full answers in Airtable. Until those fields exist, nothing changes.
 
-**Hidden fields.** Any input on the page with `data-gps-selector-field` gets
-filled in when the visitor reaches a recommendation:
+## Optional: conversion tracking on the site
 
-```html
-<input type="hidden" name="selector_session" data-gps-selector-field="sessionId">
-<input type="hidden" name="selector_result"  data-gps-selector-field="result">
-<input type="hidden" name="selector_score"   data-gps-selector-field="score">
-```
-
-**Event.** The div fires a `gps-selector:result` event that bubbles up the page.
-Its `detail` is `{ sessionId, result, score, answers }`, where `answers` maps a
-question id to the label the visitor picked:
+After a HubSpot submit, the div fires a `gps-selector:result` event that bubbles
+up the page, with `detail` set to `{ sessionId, result, score }`:
 
 ```js
 document.addEventListener('gps-selector:result', (e) => {
-  console.log(e.detail.result, e.detail.sessionId);
+  // e.g. fire a GA / ad-platform conversion here
 });
 ```
 
-The Session ID matches the `Session ID` column in the Airtable Responses table.
-Save it with the lead and you can look up that visitor's full answers.
+Only gpspromotions.com and www.gpspromotions.com receive this event. Any other
+site that frames `/embed/` gets the frame height, but nothing else.
 
 ## Notes
 
-- Only GPS's own site gets the answers. Any other site that frames `/embed/`
-  still gets the frame height, but no result.
 - The "Case Study" button opens the strategy brief in a new tab. It doesn't
   replace the frame's contents.
 - Some site builders strip `<script>` tags. If yours does, a plain
-  `<iframe src="https://gifting-selector.gpspromotions.com/embed/" style="width:100%;height:1100px;border:0">`
-  still runs the selector, but it won't resize or hand over results.
+  `<iframe src="https://gifting-selector.gpspromotions.com/embed/" style="width:100%;height:1700px;border:0">`
+  still works, gate included. It just won't resize.
