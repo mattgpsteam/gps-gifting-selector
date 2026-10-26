@@ -1227,6 +1227,13 @@ class Component extends DCLogic {
     DIGITAL: 'strategy/digital.html'
   };
 
+  // The website embed links the updated PDF briefs instead, served from /embed/.
+  EMBED_CASE_FILES = {
+    PHYSICAL: 'case-studies/traditional-gifting.pdf',
+    HYBRID: 'case-studies/hybrid-gifting.pdf',
+    DIGITAL: 'case-studies/digital-gifting.pdf'
+  };
+
   RANK = { PHYSICAL: 0, HYBRID: 1, DIGITAL: 2 };
   BY_RANK = ['PHYSICAL', 'HYBRID', 'DIGITAL'];
 
@@ -1503,13 +1510,15 @@ class Component extends DCLogic {
   }
 
   openCase() {
-    const file = this.CASE_FILES[this.state.resultKey];
-    // Briefs live at the site root; /sales/ and /embed/ are one folder down.
+    const embed = this.isEmbed();
+    const file = (embed ? this.EMBED_CASE_FILES : this.CASE_FILES)[this.state.resultKey];
     if (!file) return;
-    const url = encodeURI((this.isSales() || this.isEmbed() ? '../' : '') + file);
+    // HTML briefs live at the site root, one folder up from /sales/; the embed's
+    // PDFs sit next to it in /embed/case-studies/.
+    const url = encodeURI((this.isSales() ? '../' : '') + file);
     // Inside a frame on gpspromotions.com, open the brief in a new tab instead of
     // swapping it into the frame.
-    if (this.isEmbed()) window.open(url, '_blank', 'noopener');
+    if (embed) window.open(url, '_blank', 'noopener');
     else window.location.href = url;
   }
 

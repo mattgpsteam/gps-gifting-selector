@@ -56,8 +56,10 @@ site that frames `/embed/` gets the frame height, but nothing else.
 
 ## Notes
 
-- The "Case Study" button opens the strategy brief in a new tab. It doesn't
-  replace the frame's contents.
+- The "Case Study" button opens the updated PDF brief for that result
+  (`embed/case-studies/`) in a new tab. It doesn't replace the frame's
+  contents. The main page and `/sales` still link the HTML briefs in
+  `strategy/`. To swap a PDF, replace the file and keep its name.
 - Some site builders strip `<script>` tags. If yours does, a plain
   `<iframe src="https://gifting-selector.gpspromotions.com/embed/" style="width:100%;height:1700px;border:0">`
   still works, gate included. It just won't resize.
